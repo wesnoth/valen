@@ -1,0 +1,6 @@
+File list:
+
+index.php		The web front-end (PHP)
+bin/valen.pl		The status report script (Perl)
+glamdrol/*		Wesnoth.org 'Glamdrol' site stylesheet and graphics
+valen/*			Custom add-on stylesheet used by the web front-end
