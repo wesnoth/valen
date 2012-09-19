@@ -24,7 +24,8 @@
 
 #
 # Usage:
-#   valen.pl [-d | --debug] report_file_path
+#   valen.pl [-d | --debug] [--addons-client=/path/to/wesnoth_addon_manager]
+#            report_file_path
 #
 
 use 5.010;
@@ -44,7 +45,7 @@ my $debug = 0;
 
 # Path to the Wesnoth add-ons client script used to check
 # the campaignd instances' status.
-my $wesnoth_addon_manager = '/home/shadowm/bin/wesnoth_addon_manager';
+my $wesnoth_addon_manager = '/usr/local/bin/wesnoth_addon_manager';
 
 my %config = (
 	output_path				=> '/tmp/valen.status',
@@ -194,6 +195,8 @@ sub check_campaignd($$)
 foreach(@ARGV) {
 	if($_ eq '--debug' || $_ eq '-d') {
 		$debug = 1;
+	} elsif(/^--addons-client=(.+)$/) {
+		$wesnoth_addon_manager = $1;
 	}
 }
 
