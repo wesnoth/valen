@@ -48,7 +48,7 @@ my $debug = 0;
 my $wesnoth_addon_manager = '/usr/local/bin/wesnoth_addon_manager';
 
 my %config = (
-	output_path				=> '/tmp/valen.status',
+	output_path				=> '/var/lib/valen/report',
 
 	hostname				=> 'wesnoth.org',
 	# NOTE: This needs to be updated if wesnoth.org's host IP ever changes.

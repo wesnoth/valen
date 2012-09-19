@@ -23,7 +23,7 @@
  */
 
 /* NOTE: this must be set to the path used for valen.pl's reports. */
-define('VALEN_REPORT_FILE', '/tmp/valen.status');
+define('VALEN_REPORT_FILE', '/var/lib/valen/report');
 
 define('STATUS_UNKNOWN',		-1);
 define('STATUS_FAIL',			 0);
