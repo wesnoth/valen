@@ -105,6 +105,12 @@ function display_status_report_age()
 {
 	global $status_timestamp;
 
+	if($status_timestamp === 0)
+	{
+		print("Never.");
+		return;
+	}
+
 	$text = '';
 
 	$delta = time() - $status_timestamp;
