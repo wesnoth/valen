@@ -128,8 +128,13 @@ sub write_hash_to_file(\%$)
 	my $hash_ref = shift;
 	my $out_path = shift;
 
-	open(my $out, '>', $out_path)
-		or die("Could not open '" . $out_path . "' for writing: " . $!);
+	# In order to avoid someone else reading $out_path mid-write,
+	# write the intermediate results to a new file that will later
+	# clobber $out_path.
+	my $int_path = $out_path . '.new';
+
+	open(my $out, '>', $int_path)
+		or die("Could not open '" . $int_path . "' for writing: " . $!);
 
 	foreach(keys %{$hash_ref}) {
 		print $out $_ . '=' . $hash_ref->{$_} . "\n";
@@ -139,6 +144,9 @@ sub write_hash_to_file(\%$)
 	print $out 'ts=' . time() . "\n";
 
 	close $out;
+
+	rename($int_path, $out_path)
+		or die("Could not replace '" . $out_path . "': " . $!);
 }
 
 sub check_url($)
