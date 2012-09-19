@@ -40,7 +40,7 @@ function read_report_file($file)
 
 	$lines = @file($file, FILE_IGNORE_NEW_LINES);
 
-	if($lines === NULL)
+	if($lines === FALSE)
 	{
 		return;
 	}
