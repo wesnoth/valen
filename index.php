@@ -174,6 +174,8 @@ read_report_file(VALEN_REPORT_FILE);
 
 	<title>Battle for Wesnoth Web Status (codename “Valen”)</title>
 
+	<link rel="shortcut icon" href="./glamdrol/favicon.ico" type="image/x-icon" />
+
 	<link rel="stylesheet" type="text/css" href="./glamdrol/main.css" />
 	<link rel="stylesheet" type="text/css" href="./valen/valen.css" />
 </head>
