@@ -32,12 +32,14 @@ use 5.010;
 use strict;
 use warnings;
 
+package valen;
+
+use IO::Socket;
+use IO::Uncompress::Gunzip qw(gunzip $GunzipError);
 use LWP::UserAgent;
 use Socket;
 
-package valen;
-
-# $| = 1;
+$| = 1;
 
 my $VERSION = '0.0.1';
 
@@ -61,6 +63,8 @@ my %config = (
 	mp_main_hostname		=> 'server.wesnoth.org',
 	mp_alt2_hostname		=> 'server2.wesnoth.org',
 	mp_alt3_hostname		=> 'server3.wesnoth.org',
+
+	mp_port					=> 15000,
 
 	web_url					=> 'http://wesnoth.org/',
 	forums_url				=> 'http://forums.wesnoth.org/',
@@ -92,6 +96,8 @@ use constant {
 };
 
 sub dprint { print @_ if $debug }
+
+sub dwarn { warn @_ if $debug }
 
 {
 	#
@@ -198,6 +204,124 @@ sub check_campaignd($$)
 
 	return 0 == system(
 		"$wesnoth_addon_manager -a $addr -p $port -l >/dev/null 2>/dev/null");
+}
+
+sub check_wesnothd($$)
+{
+	my $otimer = otimer->new();
+
+	my $addr = shift;
+	my $port = shift;
+
+	my $sock = new IO::Socket::INET(
+		PeerAddr => $addr, PeerPort => $port, Proto => 'tcp', Timeout => WESNOTHD_TIMEOUT);
+
+	if(!$sock) {
+		dwarn "wesnothd ($addr:$port): could not establish connection\n";
+		return 0;
+	}
+
+	# The Timeout option in the IO::Socket::INET constructor
+	# is only good when establishing the connection, so we
+	# must set read/send timeouts ourselves.
+
+	my $timeout_timeval = pack('L!L!', WESNOTHD_TIMEOUT, 0);
+
+	unless($sock->sockopt(SO_SNDTIMEO, $timeout_timeval) &&
+		$sock->sockopt(SO_RCVTIMEO, $timeout_timeval)) {
+		dwarn "wesnothd ($addr:$port): socket layer smells funny\n";
+		return 0;
+	}
+
+	#
+	# Initial handshake.
+	#
+
+	if(!print $sock pack('N', 0)) {
+		dwarn "wesnothd ($addr:$port): could not send to server\n";
+		return 0;
+	}
+
+	my $buf = '';
+
+	read $sock, $buf, 4;
+	my $conn_num = unpack('N', $buf);
+
+	if(!defined $conn_num) {
+		dwarn "wesnothd ($addr:$port): connection broke or timed out during handshake\n";
+		return 0;
+	}
+
+	if(length $conn_num != 4) {
+		dwarn "wesnothd ($addr:$port): malformed connection number\n";
+		return 0;
+	}
+
+	dprint "wesnothd ($addr:$port): handshake succeeded ($conn_num)\n";
+
+	#
+	# Get the compressed packet size.
+	#
+
+	$buf = '';
+
+	my $nread = read($sock, $buf, 4);
+
+	if(!defined $nread || !$nread) {
+		dwarn "wesnothd ($addr:$port): connection broke during read\n";
+		return 0;
+	}
+
+	if($nread != 4) {
+		dwarn "wesnothd ($addr:$port): read error\n";
+		return 0;
+	}
+
+	#
+	# Read the compressed packet.
+	#
+
+	$nread = 0;
+
+	my $zpacket = '';
+	my $zpacket_length = unpack('N', $buf);
+	my $zread_length = 0;
+
+	while($zread_length < $zpacket_length) {
+		my $zremaining_length = $zpacket_length - $nread;
+
+		$buf = '';
+
+		$nread = read($sock, $buf, $zremaining_length);
+		$zread_length += $nread
+			if $nread == length($buf);
+
+		$zpacket .= $buf;
+	}
+
+	my $text = '';
+
+	unless(gunzip(\$zpacket => \$text)) {
+		dwarn "wesnothd ($addr:$port): gunzip failed: $GunzipError\n";
+		return 0;
+	}
+
+	# We now have the WML. According to Gambit and the MultiplayerServerWML
+	# wiki page, we should get an optional empty [version] WML node (asking
+	# us to send our own [version] response) after the handshake. It is not
+	# currently known what the response would be when the server doesn't
+	# care about the client version, but since the normal next step is the
+	# [mustlogin] request, that's probably the alternative in this case
+	# too.
+	if($text !~ m.^\[(version|mustlogin)\]\n\[/\1\]\n.) {
+		dwarn "wesnothd ($addr:$port): got something other than [version] or [mustlogin]\n";
+		dwarn "--cut here--\n" . $text . "--cut here--\n";
+		return 0;
+	}
+
+	dprint "wesnothd ($addr:$port): OK ($1)\n";
+
+	return 1;
 }
 
 ################################################################################
@@ -320,6 +444,19 @@ dprint "*** campaignd: " . $status{addons} . "\n";
 # MULTIPLAYER SERVERS CHECK                                                    #
 #                                                                              #
 ################################################################################
+
+{
+
+$status{'mp-main'} = check_wesnothd($config{mp_main_hostname}, $config{mp_port});
+dprint "*** wesnothd 1: " . $status{'mp-main'} . "\n";
+
+$status{'mp-alt2'} = check_wesnothd($config{mp_alt2_hostname}, $config{mp_port});
+dprint "*** wesnothd 2: " . $status{'mp-alt2'} . "\n";
+
+$status{'mp-alt3'} = check_wesnothd($config{mp_alt3_hostname}, $config{mp_port});
+dprint "*** wesnothd 3: " . $status{'mp-alt3'} . "\n";
+
+}
 
 ################################################################################
 #                                                                              #
