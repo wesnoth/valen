@@ -185,7 +185,7 @@ sub check_url($)
 
 	# Really, we should only get 200 OK unless there's something unusual
 	# going on with the HTTP server.
-	my $ret = $resp->code() == 200;
+	my $ret = int($resp->code() == 200);
 
 	dprint "HTTP ($url): $ret (" . $resp->status_line() . ")\n";
 
@@ -202,8 +202,8 @@ sub check_campaignd($$)
 	my $addr = shift;
 	my $port = shift;
 
-	return 0 == system(
-		"$wesnoth_addon_manager -a $addr -p $port -l >/dev/null 2>/dev/null");
+	return int(0 == system(
+		"$wesnoth_addon_manager -a $addr -p $port -l >/dev/null 2>/dev/null"));
 }
 
 sub check_wesnothd($$)
@@ -363,7 +363,7 @@ foreach my $hostname (@unique_hosts) {
 
 	my (undef, undef, undef, undef, @addr) = gethostbyname($hostname);
 
-	my $passed = @addr > 0;
+	my $passed = int(@addr > 0);
 	dprint "DNS ($hostname): $passed\n";
 
 	if(($status{dns} == STATUS_GOOD && !$passed) ||
