@@ -85,6 +85,12 @@ for(qw(dns web wiki forums addons mp-main mp-alt2 mp-alt3)) {
 	$status{$_} = STATUS_UNKNOWN;
 }
 
+# Various timeouts (in seconds).
+use constant {
+	HTTP_TIMEOUT			=> 10,
+	WESNOTHD_TIMEOUT		=> 10,
+};
+
 sub dprint { print @_ if $debug }
 
 {
@@ -159,7 +165,7 @@ sub check_url($)
 
 	$ua->agent(sprintf('codename Valen/%s %s', $VERSION, $ua->_agent()));
 	# 30 seconds should really be enough in the worst case.
-	$ua->timeout(30);
+	$ua->timeout(HTTP_TIMEOUT);
 	# Don't follow redirects, they are used by the wesnoth.org admins to
 	# redirect users to status pages when things break.
 	$ua->max_redirect(0);
