@@ -56,7 +56,9 @@ my %config = (
 
 	addons_hostname			=> 'add-ons.wesnoth.org',
 
-	addons_ports			=> [ '1.11.x', '1.10.x' ],
+	# 15006: 1.11.x
+	# 15002: 1.10.x
+	addons_ports			=> [ 15006,  15002 ],
 
 	mp_main_hostname		=> 'server.wesnoth.org',
 	mp_alt2_hostname		=> 'server2.wesnoth.org',
@@ -188,20 +190,6 @@ sub check_url($)
 	dprint "HTTP ($url): $ret (" . $resp->status_line() . ")\n";
 
 	return $ret;
-}
-
-sub check_campaignd($$)
-{
-	unless(defined($wesnoth_addon_manager) && length($wesnoth_addon_manager) &&
-	       -x $wesnoth_addon_manager) {
-		return undef;
-	}
-
-	my $addr = shift;
-	my $port = shift;
-
-	return int(0 == system(
-		"$wesnoth_addon_manager -a $addr -p $port -l >/dev/null 2>/dev/null"));
 }
 
 {
@@ -405,6 +393,45 @@ sub check_campaignd($$)
 	}
 }
 
+sub empty_wml_node($)
+{
+	return '[' . $_[0] . "]\n[/" . $_[0] . "]\n";
+}
+
+sub check_campaignd($$)
+{
+	my $addr = shift;
+	my $port = shift;
+
+	my $client = gzclient->new($addr, $port);
+
+	if(!$client) {
+		dwarn "campaignd ($addr:$port): gzclient connection failed\n";
+		return 0;
+	}
+
+	if(!$client->send(empty_wml_node 'request_terms')) {
+		dwarn "campaignd ($addr:$port): could not send [request_terms] probe\n";
+	}
+
+	my $wml = $client->recv();
+
+	if(!defined $wml) {
+		dwarn "campaignd ($addr:$port): no server response\n";
+		return 0;
+	}
+
+	if($wml !~ m|^\[message]\n\s*message=\".*\"\n\[/message\]\n|) {
+		dwarn "campaignd ($addr:$port): server response is not a proper [message]\n";
+		dwarn "--cut here--\n" . $wml . "--cut here--\n";
+		return 0;
+	}
+
+	dprint "campaignd ($addr:$port): OK\n";
+
+	return 1;
+}
+
 sub check_wesnothd($$)
 {
 	my $otimer = otimer->new();
@@ -544,8 +571,6 @@ foreach my $port (@{$config{addons_ports}}) {
 		dprint("There's something wrong with our configuration; skipping add-ons check for now\n");
 		last;
 	}
-
-	dprint "campaignd ($addr:$port): $port_status\n";
 
 	if(($status{addons} == STATUS_GOOD && !$port_status) ||
 	   ($status{addons} == STATUS_FAIL && $port_status)) {
