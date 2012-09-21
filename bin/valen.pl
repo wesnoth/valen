@@ -34,8 +34,6 @@ use warnings;
 
 package valen;
 
-use IO::Socket;
-use IO::Uncompress::Gunzip qw(gunzip $GunzipError);
 use LWP::UserAgent;
 use Socket;
 
@@ -92,7 +90,7 @@ for(qw(dns web wiki forums addons mp-main mp-alt2 mp-alt3)) {
 # Various timeouts (in seconds).
 use constant {
 	HTTP_TIMEOUT			=> 10,
-	WESNOTHD_TIMEOUT		=> 10,
+	GZCLIENT_TIMEOUT		=> 10,
 };
 
 sub dprint { print @_ if $debug }
@@ -206,6 +204,175 @@ sub check_campaignd($$)
 		"$wesnoth_addon_manager -a $addr -p $port -l >/dev/null 2>/dev/null"));
 }
 
+{
+	#
+	# A minimalistic networked gzip packets client.
+	#
+
+	package gzclient;
+
+	use IO::Socket;
+	use IO::Uncompress::Gunzip qw(gunzip $GunzipError);
+
+	##
+	# Constructor.
+	##
+	sub new
+	{
+		my ($class, $addr, $port) = @_;
+
+		my $self = {
+			_addr		=> $addr,
+			_port		=> $port,
+			_timeout	=> valen::GZCLIENT_TIMEOUT,
+			_sock		=> 0,
+			_conn_num	=> 0,
+		};
+
+		bless $self, $class;
+
+		return $self->connect() ? $self : undef;
+	}
+
+	##
+	# Print a warning on stderr when debug mode is active.
+	##
+	sub dwarn
+	{
+		my $self = shift;
+
+		warn ("gzclient (" . $self->{_addr} . ':' . $self->{_port} . ') ', @_)
+			if $debug;
+	}
+
+	##
+	# Print a diagnostic message on stdout when debug mode is active.
+	##
+	sub dprint
+	{
+		my $self = shift;
+
+		print STDOUT ("gzclient (" . $self->{_addr} . ':' . $self->{_port} . ') ', @_)
+			if $debug;
+	}
+
+	##
+	# Establish connection.
+	#
+	# This is called by the constructor and shouldn't be called
+	# multiple times.
+	##
+	sub connect
+	{
+		my $self = shift;
+
+		return if $self->{_sock};
+
+		$self->{_sock} = new IO::Socket::INET(
+				PeerAddr => $self->{_addr}, PeerPort => $self->{_port},
+				Proto => 'tcp', Timeout => $self->{_timeout});
+
+		if(!$self->{_sock}) {
+			$self->dwarn("could not establish connection\n");
+			return 0;
+		}
+
+		# The Timeout option in the IO::Socket::INET constructor
+		# is only good when establishing the connection, so we
+		# must set read/send timeouts ourselves.
+
+		my $timeout_timeval = pack('L!L!', $self->{_timeout}, 0);
+
+		unless($self->{_sock}->sockopt(SO_SNDTIMEO, $timeout_timeval) &&
+			$self->{_sock}->sockopt(SO_RCVTIMEO, $timeout_timeval)) {
+			$self->dwarn("socket layer smells funny\n");
+			return 0;
+		}
+
+		#
+		# Initial handshake.
+		#
+
+		if(!print { $self->{_sock} } pack('N', 0)) {
+			$self->dwarn("could not send to server\n");
+			return 0;
+		}
+
+		my $buf = '';
+
+		read $self->{_sock}, $buf, 4;
+		my $conn_num = unpack('N', $buf);
+
+		if(!defined $conn_num) {
+			$self->dwarn("connection broke or timed out during handshake\n");
+			return 0;
+		}
+
+		if(length $conn_num != 4) {
+			$self->dwarn("malformed connection number\n");
+			return 0;
+		}
+
+		$self->{_conn_num} = $conn_num;
+
+		$self->dprint("handshake succeeded ($conn_num)\n");
+
+		return 1;
+	}
+
+	##
+	# Read a compressed packet.
+	##
+	sub recv
+	{
+		my $self = shift;
+
+		my $buf = '';
+		my $nread = read($self->{_sock}, $buf, 4);
+
+		if(!defined $nread || !$nread) {
+			$self->dwarn("connection broke during read\n");
+			return undef;
+		}
+
+		if($nread != 4) {
+			$self->dwarn("read error\n");
+			return undef;
+		}
+
+		#
+		# Read the compressed packet.
+		#
+
+		$nread = 0;
+
+		my $zpacket = '';
+		my $zpacket_length = unpack('N', $buf);
+		my $zread_length = 0;
+
+		while($zread_length < $zpacket_length) {
+			my $zremaining_length = $zpacket_length - $nread;
+
+			$buf = '';
+
+			$nread = read($self->{_sock}, $buf, $zremaining_length);
+			$zread_length += $nread
+				if $nread == length($buf);
+
+			$zpacket .= $buf;
+		}
+
+		my $text = '';
+
+		unless(gunzip(\$zpacket => \$text)) {
+			$self->dwarn("gunzip failed: $GunzipError\n");
+			return undef;
+		}
+
+		return $text;
+	}
+}
+
 sub check_wesnothd($$)
 {
 	my $otimer = otimer->new();
@@ -213,96 +380,17 @@ sub check_wesnothd($$)
 	my $addr = shift;
 	my $port = shift;
 
-	my $sock = new IO::Socket::INET(
-		PeerAddr => $addr, PeerPort => $port, Proto => 'tcp', Timeout => WESNOTHD_TIMEOUT);
+	my $client = gzclient->new($addr, $port);
 
-	if(!$sock) {
-		dwarn "wesnothd ($addr:$port): could not establish connection\n";
+	if(!$client) {
+		dwarn "wesnothd ($addr:$port): gzclient connection failed\n";
 		return 0;
 	}
 
-	# The Timeout option in the IO::Socket::INET constructor
-	# is only good when establishing the connection, so we
-	# must set read/send timeouts ourselves.
+	my $wml = $client->recv();
 
-	my $timeout_timeval = pack('L!L!', WESNOTHD_TIMEOUT, 0);
-
-	unless($sock->sockopt(SO_SNDTIMEO, $timeout_timeval) &&
-		$sock->sockopt(SO_RCVTIMEO, $timeout_timeval)) {
-		dwarn "wesnothd ($addr:$port): socket layer smells funny\n";
-		return 0;
-	}
-
-	#
-	# Initial handshake.
-	#
-
-	if(!print $sock pack('N', 0)) {
-		dwarn "wesnothd ($addr:$port): could not send to server\n";
-		return 0;
-	}
-
-	my $buf = '';
-
-	read $sock, $buf, 4;
-	my $conn_num = unpack('N', $buf);
-
-	if(!defined $conn_num) {
-		dwarn "wesnothd ($addr:$port): connection broke or timed out during handshake\n";
-		return 0;
-	}
-
-	if(length $conn_num != 4) {
-		dwarn "wesnothd ($addr:$port): malformed connection number\n";
-		return 0;
-	}
-
-	dprint "wesnothd ($addr:$port): handshake succeeded ($conn_num)\n";
-
-	#
-	# Get the compressed packet size.
-	#
-
-	$buf = '';
-
-	my $nread = read($sock, $buf, 4);
-
-	if(!defined $nread || !$nread) {
-		dwarn "wesnothd ($addr:$port): connection broke during read\n";
-		return 0;
-	}
-
-	if($nread != 4) {
-		dwarn "wesnothd ($addr:$port): read error\n";
-		return 0;
-	}
-
-	#
-	# Read the compressed packet.
-	#
-
-	$nread = 0;
-
-	my $zpacket = '';
-	my $zpacket_length = unpack('N', $buf);
-	my $zread_length = 0;
-
-	while($zread_length < $zpacket_length) {
-		my $zremaining_length = $zpacket_length - $nread;
-
-		$buf = '';
-
-		$nread = read($sock, $buf, $zremaining_length);
-		$zread_length += $nread
-			if $nread == length($buf);
-
-		$zpacket .= $buf;
-	}
-
-	my $text = '';
-
-	unless(gunzip(\$zpacket => \$text)) {
-		dwarn "wesnothd ($addr:$port): gunzip failed: $GunzipError\n";
+	if(!defined $wml) {
+		dwarn "wesnothd ($addr:$port): no server response\n";
 		return 0;
 	}
 
@@ -313,9 +401,9 @@ sub check_wesnothd($$)
 	# care about the client version, but since the normal next step is the
 	# [mustlogin] request, that's probably the alternative in this case
 	# too.
-	if($text !~ m.^\[(version|mustlogin)\]\n\[/\1\]\n.) {
+	if($wml !~ m.^\[(version|mustlogin)\]\n\[/\1\]\n.) {
 		dwarn "wesnothd ($addr:$port): got something other than [version] or [mustlogin]\n";
-		dwarn "--cut here--\n" . $text . "--cut here--\n";
+		dwarn "--cut here--\n" . $wml . "--cut here--\n";
 		return 0;
 	}
 
