@@ -212,6 +212,8 @@ sub check_campaignd($$)
 	package gzclient;
 
 	use IO::Socket;
+
+	use IO::Compress::Gzip qw(gzip $GzipError);
 	use IO::Uncompress::Gunzip qw(gunzip $GunzipError);
 
 	##
@@ -373,6 +375,31 @@ sub check_campaignd($$)
 		}
 
 		return $text;
+	}
+
+	##
+	# Send a compressed packet.
+	##
+	sub send
+	{
+		my $self = shift;
+		my $text = shift;
+
+		$self->{_sock} or return undef;
+
+		my $ztext = '';
+
+		unless(gzip \$text => \$ztext) {
+			$self->dwarn("gzip failed: $GzipError\n");
+			return 0;
+		}
+
+		if(!print { $self->{_sock} } pack('N', length $ztext) . $ztext) {
+			$self->dwarn("could not send compressed packet to server\n");
+			return 0;
+		}
+
+		return 1;
 	}
 }
 
