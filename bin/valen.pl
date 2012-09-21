@@ -305,15 +305,17 @@ sub check_campaignd($$)
 		read $sock, $buf, 4;
 		my $conn_num = unpack('N', $buf);
 
-		if(!defined $conn_num) {
+		if(!defined $conn_num || !length $conn_num) {
 			$self->dwarn("connection broke or timed out during handshake\n");
 			return 0;
 		}
 
-		if(length $conn_num != 4) {
-			$self->dwarn("malformed connection number\n");
-			return 0;
-		}
+		# NOTE: This isn't always true. The 1.10 campaignd sends three-digit
+		#       numbers every time.
+		#if(length $conn_num != 4) {
+		#	$self->dwarn("malformed connection number: $conn_num\n");
+		#	return 0;
+		#}
 
 		$self->dprint("handshake succeeded ($conn_num)\n");
 
