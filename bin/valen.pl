@@ -328,6 +328,8 @@ sub check_campaignd($$)
 	{
 		my $self = shift;
 
+		$self->{_sock} or return undef;
+
 		my $buf = '';
 		my $nread = read($self->{_sock}, $buf, 4);
 
