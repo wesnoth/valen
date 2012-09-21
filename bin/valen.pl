@@ -259,8 +259,8 @@ sub check_campaignd($$)
 	##
 	# Establish connection.
 	#
-	# This is called by the constructor and shouldn't be called
-	# multiple times.
+	# This is called by the constructor and does nothing once the
+	# connection is already established.
 	##
 	sub connect
 	{
@@ -268,11 +268,11 @@ sub check_campaignd($$)
 
 		return if $self->{_sock};
 
-		$self->{_sock} = new IO::Socket::INET(
+		my $sock = new IO::Socket::INET(
 				PeerAddr => $self->{_addr}, PeerPort => $self->{_port},
 				Proto => 'tcp', Timeout => $self->{_timeout});
 
-		if(!$self->{_sock}) {
+		if(!$sock) {
 			$self->dwarn("could not establish connection\n");
 			return 0;
 		}
@@ -283,8 +283,8 @@ sub check_campaignd($$)
 
 		my $timeout_timeval = pack('L!L!', $self->{_timeout}, 0);
 
-		unless($self->{_sock}->sockopt(SO_SNDTIMEO, $timeout_timeval) &&
-			$self->{_sock}->sockopt(SO_RCVTIMEO, $timeout_timeval)) {
+		unless($sock->sockopt(SO_SNDTIMEO, $timeout_timeval) &&
+			$sock->sockopt(SO_RCVTIMEO, $timeout_timeval)) {
 			$self->dwarn("socket layer smells funny\n");
 			return 0;
 		}
@@ -293,14 +293,14 @@ sub check_campaignd($$)
 		# Initial handshake.
 		#
 
-		if(!print { $self->{_sock} } pack('N', 0)) {
+		if(!print $sock pack('N', 0)) {
 			$self->dwarn("could not send to server\n");
 			return 0;
 		}
 
 		my $buf = '';
 
-		read $self->{_sock}, $buf, 4;
+		read $sock, $buf, 4;
 		my $conn_num = unpack('N', $buf);
 
 		if(!defined $conn_num) {
@@ -313,9 +313,10 @@ sub check_campaignd($$)
 			return 0;
 		}
 
-		$self->{_conn_num} = $conn_num;
-
 		$self->dprint("handshake succeeded ($conn_num)\n");
+
+		$self->{_sock} = $sock;
+		$self->{_conn_num} = $conn_num;
 
 		return 1;
 	}
