@@ -28,7 +28,7 @@ define('VALEN_REPORT_FILE', '/var/lib/valen/report');
 define('STATUS_UNKNOWN',		-1);
 define('STATUS_FAIL',			 0);
 define('STATUS_GOOD',			 1);
-define('STATUS_INCOMPLETE',		 1);
+define('STATUS_INCOMPLETE',		 2);
 
 $status = array();
 
