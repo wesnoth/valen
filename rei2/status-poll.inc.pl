@@ -65,6 +65,8 @@ BOT_COMMAND_HANDLER {
         push @status_bits, "\002$label\002: $text" . $normal;
     }
 
+    my $original_delta = $delta;
+
     if($delta > 0) {
         my $sec = $delta % 60;
         $delta = int(($delta - $sec) / 60);
@@ -92,9 +94,9 @@ BOT_COMMAND_HANDLER {
 
     msg(join(' ', @status_bits), @_);
 
-    if($delta == 0) {
+    if($original_delta == 0) {
         msg("\002Last updated\002: just now.", @_);
-    } elsif($delta > 0) {
+    } elsif($original_delta > 0) {
         msg("\002Last updated\002: " . join(', ', @age_bits) . " ago.", @_);
     } else {
         msg("\002Last updated\002: \002IN THE FUTURE!\002", @_);
