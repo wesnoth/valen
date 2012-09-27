@@ -61,7 +61,7 @@ function read_report_file($file)
 	}
 }
 
-function display_status($facility_id, $display_title)
+function display_status($facility_id, $display_title, $display_description)
 {
 	global $status;
 
@@ -90,8 +90,12 @@ function display_status($facility_id, $display_title)
 		}
 	}
 
-	print('<dt class="' . $facility_id . '">'. $display_title . '</dt>' .
-		'<dd class="' . $facility_id . ' ' . $class . '">'. $label . '</dd>');
+	print('<li class="' . $facility_id . ' ' . $class . '"><span class="entry">' .
+		'<span class="title">' . $display_title . '</span>' .
+		'<span class="description">' . $display_description . '</span>' .
+		'</span><span class="status">' . $label . '</span>' .
+		'<span class="clear"><span></span></span>' .
+		'</li>');
 
 	return;
 }
@@ -172,7 +176,7 @@ read_report_file(VALEN_REPORT_FILE);
 	<meta http-equiv="content-language" content="en" />
 	<meta http-equiv="content-style-type" content="text/css" />
 
-	<title>Battle for Wesnoth Web Status (codename “Valen”)</title>
+	<title>Battle for Wesnoth &bull; Site Status</title>
 
 	<link rel="shortcut icon" href="./glamdrol/favicon.ico" type="image/x-icon" />
 
@@ -186,7 +190,7 @@ read_report_file(VALEN_REPORT_FILE);
 
 <div id="header">
   <div id="logo">
-    <a href="http://www.wesnoth.org/"><img alt="Wesnoth logo" src="glamdrol/wesnoth-logo.jpg" /></a>
+    <a href="http://www.wesnoth.org/"><img alt="Wesnoth logo" src="./glamdrol/wesnoth-logo.jpg" /></a>
   </div>
 </div>
 
@@ -207,28 +211,87 @@ read_report_file(VALEN_REPORT_FILE);
 <div id="main">
 <div id="content">
 
-<h1>Battle for Wesnoth Web Status</h1>
+<h1>Site Status</h1>
 
-<dl class="status-table"><?php
-	display_status('dns', 'DNS');
+<div id="contentSub"></div>
 
-	display_status('web', 'Wesnoth.org web');
-	display_status('wiki', 'Wesnoth.org wiki');
-	display_status('forums', 'Wesnoth.org forums');
+<ul class="status-table"><?php
+	display_status(
+		'dns',
+		'DNS',
+		'Resolves names such as ‘wesnoth.org’ to IP addresses'
+	);
 
-	display_status('addons', 'Add-ons server');
-	display_status('mp-main', 'Primary MP server');
+	display_status(
+		'web',
+		'Wesnoth.org web',
+		'Wesnoth.org HTTP server and front page'
+	);
 
-	display_status('mp-alt2', 'Alternate MP server (server2.wesnoth.org)');
-	display_status('mp-alt3', 'Alternate MP server (server3.wesnoth.org)');
-?></dl>
+	display_status(
+		'wiki',
+		'Wesnoth.org wiki',
+		'Wesnoth.org MediaWiki instance &bull; <a href="http://wiki.wesnoth.org/Special:Statistics">Stats</a>'
+	);
+
+	display_status(
+		'forums',
+		'Wesnoth.org forums',
+		'Wesnoth.org phpBB instance'
+	);
+
+	display_status(
+		'addons',
+		'Add-ons server',
+		'Stable and development add-ons server instances'
+	);
+
+	display_status(
+		'mp-main',
+		'Primary MP server',
+		'Official main MP server &bull; <a href="http://wesnothd.wesnoth.org/">Stats</a>'
+	);
+
+	display_status(
+		'mp-alt2',
+		'Alternate MP server (server2.wesnoth.org)',
+		'Official alternate MP server'
+	);
+
+	display_status(
+		'mp-alt3',
+		'Alternate MP server (server3.wesnoth.org)',
+		'Official alternate MP server'
+	);
+?></ul>
 
 <div class="visualClear"></div>
 
-<div id="lastmod">
-	Last updated: <?php display_status_report_age() ?><br />
+<!--
+<div class="floatleft">
+	<img src="./glamdrol/wesnoth-icon.png" alt="" />
+</div>
+-->
+
+<div class="status-age">
+	Last updated <?php display_status_report_age() ?><br />
 	The time now is <?php display_server_time() ?>.
 </div>
+
+
+<?php /*
+
+<h2>Report an Issue</h2>
+
+<p>If you are experiencing availability issues with some of our services,
+make sure to notify us through any of our support channels:</p>
+
+<ul>
+	<li><a href="http://forums.wesnoth.org/viewforum.php?f=17">Website forum</a></li>
+	<li>#wesnoth on irc.freenode.net (<a href="http://webchat.freenode.net/?channels=wesnoth">webchat</a>)</li>
+</ul>
+
+*/ ?>
 
 </div> <!-- end content -->
 

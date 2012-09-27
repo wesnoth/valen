@@ -23,30 +23,84 @@
 
 .status-table {
 	margin: 1em 10%;
+	padding: 0;
+	list-style: none;
 }
 
-.status-table dt {
-	float: left;
+.status-table > li {
+	clear: both;
+	border-bottom: 1px solid #BBB;
+	padding: 0.2em 0;
+	margin: 0;
+}
+
+.status-table > li:first-child {
+	border-top: 1px solid #BBB;
+}
+
+.status-table > li > span {
+	display: block;
+	margin: 0.2em 0.8em;
+}
+
+.status-table .clear {
 	clear: both;
 }
 
-.status-table dd {
+.status-table .entry {
+	float: left;
+}
+
+.status-table .title {
+	font-weight: bold;
+}
+
+.status-table .description {
+	font-size: 0.85em;
+}
+
+.status-table .entry > span {
+	display: block;
+}
+
+.status-table .status {
 	font-weight: bold;
 	float: right;
 }
 
-.status-ok {
+/* Status entry indicator color */
+
+.status-ok .status {
 	color: green;
 }
 
-.status-wonky {
+.status-wonky .status {
 	color: #f80;
 }
 
-.status-fail {
+.status-fail .status {
 	color: red;
 }
 
-.status-unknown {
+.status-unknown .status {
 	color: gray;
+}
+
+/* Special status entry background colors */
+
+.status-wonky {
+	background: #feb;
+}
+
+.status-fail {
+	background: #fbb;
+}
+
+.status-unknown {
+	background: #ddd;
+}
+
+.status-age {
+	font-size: 0.85em;
+	text-align: center;
 }
