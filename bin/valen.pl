@@ -579,15 +579,22 @@ dprint "*** campaignd: " . $status{addons} . "\n";
 ################################################################################
 
 {
-
-$status{'mp-main'} = check_wesnothd($config{mp_main_hostname}, $config{mp_port});
-dprint "*** wesnothd 1: " . $status{'mp-main'} . "\n";
-
-$status{'mp-alt2'} = check_wesnothd($config{mp_alt2_hostname}, $config{mp_port});
-dprint "*** wesnothd 2: " . $status{'mp-alt2'} . "\n";
-
-$status{'mp-alt3'} = check_wesnothd($config{mp_alt3_hostname}, $config{mp_port});
-dprint "*** wesnothd 3: " . $status{'mp-alt3'} . "\n";
+	open(WESNOTHD, "./wesnothd_client/wesnothd_probe.py |") || dwarn "wesnothd_probe.py failed\n";
+	while(<WESNOTHD>) {
+		chomp;
+		my ($key, $value) = split(/=/, $_);
+		@_ = split(/-/, $key);
+		pop @_;
+		my $server = join("-", @_);
+		$status{$key} = $value;
+		if( ($status{$server} == STATUS_UNKNOWN) ||
+			($status{$server} != STATUS_GOOD && $value == STATUS_GOOD) ||
+			($status{$server} == STATUS_FAIL && $value == STATUS_INCOMPLETE)
+		) {
+			$status{$server} = $value;
+		}
+	}
+	close(WESNOTHD);
 
 }
 
