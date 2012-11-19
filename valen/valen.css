@@ -63,26 +63,38 @@
 	display: block;
 }
 
-.status-table .status {
-	font-weight: bold;
+.status-table .statuses {
+	display: block;
 	float: right;
+}
+
+.status-table .statuses .status {
+	text-align: right;
+}
+
+.status-table .statuses > span {
+	display: block;
+}
+
+.status-table .statuses .status {
+	font-weight: bold;
 }
 
 /* Status entry indicator color */
 
-.status-ok .status {
+.status-ok .status, .substatus-ok {
 	color: green;
 }
 
-.status-wonky .status {
+.status-wonky .status, .substatus-wonky {
 	color: #f80;
 }
 
-.status-fail .status {
+.status-fail .status, .substatus-fail {
 	color: red;
 }
 
-.status-unknown .status {
+.status-unknown .status, .substatus-unknown {
 	color: gray;
 }
 
