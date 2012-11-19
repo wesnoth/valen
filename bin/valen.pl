@@ -465,6 +465,21 @@ sub check_wesnothd($$)
 	return 1;
 }
 
+sub chdir_to_scriptloc {
+	my $executable;
+	open(CMDLINE, "/proc/self/cmdline");
+	while(<CMDLINE>) {
+		$executable = $_;
+	}
+	@_ = split(/\0/, $executable);
+	$executable = $_[-1];
+	@_ = split('/', $executable);
+	pop @_;
+	my $directory = join('/', @_);
+	print "DIR: $directory\n";
+	chdir($directory);
+}
+
 ################################################################################
 #                                                                              #
 # COMMAND LINE CONFIGURATION                                                   #
@@ -579,6 +594,7 @@ dprint "*** campaignd: " . $status{addons} . "\n";
 ################################################################################
 
 {
+	chdir_to_scriptloc;
 	open(WESNOTHD, "./wesnothd_client/wesnothd_probe.py |") || dwarn "wesnothd_probe.py failed\n";
 	while(<WESNOTHD>) {
 		chomp;
