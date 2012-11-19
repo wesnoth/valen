@@ -278,19 +278,22 @@ read_report_file(VALEN_REPORT_FILE);
 	display_status(
 		'mp-main',
 		'Primary MP server',
-		'Official main MP server &bull; <a href="http://wesnothd.wesnoth.org/">Stats</a>'
+		'Official main MP server &bull; <a href="http://wesnothd.wesnoth.org/">Stats</a>',
+		array('ancientstable', 'oldstable', 'stable', 'dev', 'trunk')
 	);
 
 	display_status(
 		'mp-alt2',
 		'Alternate MP server (server2.wesnoth.org)',
-		'Official alternate MP server'
+		'Official alternate MP server',
+		array('ancientstable', 'oldstable', 'stable')
 	);
 
 	display_status(
 		'mp-alt3',
 		'Alternate MP server (server3.wesnoth.org)',
-		'Official alternate MP server'
+		'Official alternate MP server',
+		array('ancientstable', 'oldstable', 'stable')
 	);
 ?></ul>
 
