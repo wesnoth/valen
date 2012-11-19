@@ -51,9 +51,14 @@ my %config = (
 
 	addons_hostname			=> 'add-ons.wesnoth.org',
 
-	# 15006: 1.11.x
-	# 15002: 1.10.x
-	addons_ports			=> [ 15006,  15002 ],
+	addons_ports			=> {
+		dev => 15006,
+		stable => 15002
+		#oldstable => 15001,
+		#ancientstable => 15003,
+		#1.4 => 15005,
+		#trunk => 15004
+	},
 
 	mp_main_hostname		=> 'server.wesnoth.org',
 	mp_alt2_hostname		=> 'server2.wesnoth.org',
@@ -548,10 +553,12 @@ if($status{dns} != STATUS_GOOD && $status{web} != STATUS_GOOD) {
 
 my $addr = $config{addons_hostname};
 
-foreach my $port (@{$config{addons_ports}}) {
+foreach my $version (keys %{$config{addons_ports}}) {
+	my $port = ${$config{addons_ports}}{$version};
 	my $otimer = otimer->new();
 
 	my $port_status = check_campaignd($addr, $port);
+	$status{"addons-$version"} = $port_status;
 
 	if(($status{addons} == STATUS_GOOD && !$port_status) ||
 	   ($status{addons} == STATUS_FAIL && $port_status)) {
