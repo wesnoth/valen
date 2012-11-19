@@ -476,7 +476,6 @@ sub chdir_to_scriptloc {
 	@_ = split('/', $executable);
 	pop @_;
 	my $directory = join('/', @_);
-	print "DIR: $directory\n";
 	chdir($directory);
 }
 
