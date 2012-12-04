@@ -288,8 +288,10 @@ sub check_url($)
 
 		if(!defined $nread) {
 			$self->dwarn("handshake failed: $!\n");
+			return 0;
 		} elsif($nread != 4) {
 			$self->dwarn("short read during handshake\n");
+			return 0;
 		}
 
 		my $conn_num = unpack('N', $buf);
