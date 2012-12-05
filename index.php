@@ -115,13 +115,15 @@ function display_status($facility_id, $display_title, $display_description, $sub
 		'</span><span class="statuses">' .
 		'<span class="status">' . $label . '</span>' .
 		'<span class="substatuses">');
+
 	foreach($subversions as $version) {
 		$numeric = get_numeric_version($version);
 		$full_id = "$facility_id-$version";
 		list($class, $label) = get_status($status[$full_id]);
 		print(' <span class="sub' . $class . '" title="' . $label . '">' . $numeric . '</span>');
 	}
-		print('</span></span>' .
+
+	print('</span></span>' .
 		'<span class="clear"><span></span></span>' .
 		'</li>');
 
