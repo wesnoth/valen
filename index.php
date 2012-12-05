@@ -61,39 +61,67 @@ function read_report_file($file)
 	}
 }
 
-function display_status($facility_id, $display_title, $display_description)
+function get_status($status) {
+	switch($status)
+	{
+		case STATUS_GOOD:
+			$class = 'status-ok';
+			$label = 'Online';
+		break;
+		case STATUS_FAIL:
+			$class = 'status-fail';
+			$label = 'Offline';
+		break;
+		case STATUS_INCOMPLETE:
+			$class = 'status-wonky';
+			$label = 'Some issues';
+		break;
+		default:
+			$class = 'status-unknown';
+			$label = 'Unknown';
+		break;
+	}
+	return array($class, $label);
+}
+
+function get_numeric_version($version) {
+	switch($version)
+	{
+		case 'ancientstable':
+			return '1.6';
+		case 'oldstable':
+			return '1.8';
+		case 'stable':
+			return '1.10';
+		case 'dev':
+			return '1.11';
+		case 'trunk':
+			return '1.11+svn';
+		default:
+			return 'unknown';
+	}
+}
+
+function display_status($facility_id, $display_title, $display_description, $subversions = array())
 {
 	global $status;
 
-	$class = 'status-unknown';
-	$label = 'Unknown';
 
-	if(isset($status[$facility_id]))
-	{
-		switch($status[$facility_id])
-		{
-			case STATUS_GOOD:
-				$class = 'status-ok';
-				$label = 'Online';
-			break;
-			case STATUS_FAIL:
-				$class = 'status-fail';
-				$label = 'Offline';
-			break;
-			case STATUS_INCOMPLETE:
-				$class = 'status-wonky';
-				$label = 'Some issues';
-			break;
-			default:
-				// Already set above.
-			break;
-		}
-	}
+	list($class, $label) = get_status($status[$facility_id]);
 
 	print('<li class="' . $facility_id . ' ' . $class . '"><span class="entry">' .
 		'<span class="title">' . $display_title . '</span>' .
 		'<span class="description">' . $display_description . '</span>' .
-		'</span><span class="status">' . $label . '</span>' .
+		'</span><span class="statuses">' .
+		'<span class="status">' . $label . '</span>' .
+		'<span class="substatuses">');
+	foreach($subversions as $version) {
+		$numeric = get_numeric_version($version);
+		$full_id = "$facility_id-$version";
+		list($class, $label) = get_status($status[$full_id]);
+		print(' <span class="sub' . $class . '" title="' . $label . '">' . $numeric . '</span>');
+	}
+		print('</span></span>' .
 		'<span class="clear"><span></span></span>' .
 		'</li>');
 
@@ -243,25 +271,29 @@ read_report_file(VALEN_REPORT_FILE);
 	display_status(
 		'addons',
 		'Add-ons server',
-		'Stable and development add-ons server instances'
+		'Stable and development add-ons server instances',
+		array('stable', 'dev')
 	);
 
 	display_status(
 		'mp-main',
 		'Primary MP server',
-		'Official main MP server &bull; <a href="http://wesnothd.wesnoth.org/">Stats</a>'
+		'Official main MP server &bull; <a href="http://wesnothd.wesnoth.org/">Stats</a>',
+		array('ancientstable', 'oldstable', 'stable', 'dev', 'trunk')
 	);
 
 	display_status(
 		'mp-alt2',
 		'Alternate MP server (server2.wesnoth.org)',
-		'Official alternate MP server'
+		'Official alternate MP server',
+		array('ancientstable', 'oldstable', 'stable')
 	);
 
 	display_status(
 		'mp-alt3',
 		'Alternate MP server (server3.wesnoth.org)',
-		'Official alternate MP server'
+		'Official alternate MP server',
+		array('ancientstable', 'oldstable', 'stable')
 	);
 ?></ul>
 

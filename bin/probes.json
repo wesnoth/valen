@@ -1,0 +1,11 @@
+{ "servers": {
+    "mp-main" : "server.wesnoth.org",
+    "mp-alt2" : "server2.wesnoth.org",
+    "mp-alt3" : "server3.wesnoth.org" },
+  "versions": {
+    "stable" : "1.10.5",
+    "oldstable" : "1.8.6",
+    "ancientstable" : "1.6.5",
+    "dev" : "1.11.0",
+    "trunk" : "1.11.0+svn" }
+}
