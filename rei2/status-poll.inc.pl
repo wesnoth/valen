@@ -1,6 +1,6 @@
 #!/bin/true
 #
-# Copyright (C) 2012 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>
+# Copyright (C) 2012, 2013 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>
 # Rights to this code are as documented in COPYING.
 #
 
