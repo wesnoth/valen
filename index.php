@@ -288,7 +288,7 @@ read_report_file(VALEN_REPORT_FILE);
 		'mp-alt2',
 		'Alternate MP server (server2.wesnoth.org)',
 		'Official alternate MP server',
-		array('ancientstable', 'oldstable', 'stable')
+		array('oldstable', 'stable', 'dev')
 	);
 
 	display_status(

@@ -606,7 +606,7 @@ $status{'mp-main'} = check_wesnothd($config{mp_main_hostname}, $config{mp_mux_po
 dprint "*** wesnothd 1: " . $status{'mp-main'} . "\n";
 
 foreach my $version (keys %{$config{mp_alt_ports}}) {
-	my $port = $config{mp_alt_ports}->{$version};
+	my $port = $config{mp_main_ports}->{$version};
 	my $otimer = otimer->new();
 
 	my $port_status = check_wesnothd($config{mp_alt2_hostname}, $port);
