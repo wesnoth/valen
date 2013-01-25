@@ -73,10 +73,6 @@ my %config = (
 		dev => 14997,
 		trunk => 15000
 	},
-	mp_alt_ports			=> {
-		ancientstable => 14999,
-		oldstable => 14998
-	},
 
 	web_url					=> 'http://wesnoth.org/',
 	forums_url				=> 'http://forums.wesnoth.org/',
@@ -605,7 +601,7 @@ foreach my $version (keys %{$config{mp_main_ports}}) {
 $status{'mp-main'} = check_wesnothd($config{mp_main_hostname}, $config{mp_mux_port});
 dprint "*** wesnothd 1: " . $status{'mp-main'} . "\n";
 
-foreach my $version (keys %{$config{mp_alt_ports}}) {
+foreach my $version (keys %{$config{mp_main_ports}}) {
 	my $port = $config{mp_main_ports}->{$version};
 	my $otimer = otimer->new();
 
