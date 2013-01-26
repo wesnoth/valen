@@ -194,6 +194,28 @@ function display_status_report_age()
 	print($text);
 }
 
+function refresh_tag()
+{
+	global $status_timestamp;
+
+	if($status_timestamp === 0)
+	{
+		return;
+	}
+
+	$delta = time() - $status_timestamp;
+	$update_span = 60 * 15;
+	$time_til_update = $update_span - $delta;
+	if($time_til_update < 0)
+	{
+		$time_til_update = 0;
+	}
+	$spacing = 60;
+	$seconds_to_refresh = $time_til_update + $spacing;
+
+	print('<meta http-equiv="refresh" content="' . $seconds_to_refresh . '" />');
+}
+
 read_report_file(VALEN_REPORT_FILE);
 
 // Begin HTML view.
@@ -205,6 +227,7 @@ read_report_file(VALEN_REPORT_FILE);
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="content-language" content="en" />
 	<meta http-equiv="content-style-type" content="text/css" />
+	<?php refresh_tag() ?>
 
 	<title>Battle for Wesnoth &bull; Site Status</title>
 
