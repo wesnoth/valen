@@ -47,7 +47,7 @@ my %config = (
 
 	hostname				=> 'wesnoth.org',
 	# NOTE: This needs to be updated if wesnoth.org's host IP ever changes.
-	host_ip					=> '65.18.193.12',
+	host_ip					=> '144.76.5.6',
 
 	addons_hostname			=> 'add-ons.wesnoth.org',
 
