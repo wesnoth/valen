@@ -4,10 +4,6 @@
 # Rights to this code are as documented in COPYING.
 #
 
-if(Rei2::Version::short() !~ /^0\.2\./) {
-	die("The Valen status poll only works with Rei2 version 0.2.x at this time.\n");
-}
-
 my $valen_report_file = '/var/lib/valen/report';
 
 my @status_map = (
@@ -21,11 +17,8 @@ my @status_map = (
     [ 'mp-alt3', 'MP 3' ],
 );
 
-BOT_COMMAND_HANDLER {
-    my ($server, $msg, $nuh, $channel, $nick) = @_;
-
-    $msg =~ s/^WSS(?:\s+.*)?$//ims
-        or return FALSE;
+BOT_COMMAND_REGEX_HANDLER {
+    my $event = shift;
 
     my $fh;
 
@@ -92,18 +85,18 @@ BOT_COMMAND_HANDLER {
             if($sec && !$min);
     }
 
-    msg(join(' ', @status_bits), @_);
+    $event->reply_msg(join(' ', @status_bits));
 
     if($original_delta == 0) {
-        msg("\002Last updated\002: just now.", @_);
+        $event->reply_msg("\002Last updated\002: just now.");
     } elsif($original_delta > 0) {
-        msg("\002Last updated\002: " . join(', ', @age_bits) . " ago.", @_);
+        $event->reply_msg("\002Last updated\002: " . join(', ', @age_bits) . " ago.");
     } else {
-        msg("\002Last updated\002: \002IN THE FUTURE!\002", @_);
+        $event->reply_msg("\002Last updated\002: \002IN THE FUTURE!\002");
     }
 
     TRUE;
-};
+} qr{^WSS(?:\s+.*)?$}i;
 
 $help->add_entry('WSS', {
     summary     => q(Displays Wesnoth.org's status.),
