@@ -193,7 +193,9 @@ sub check_url($)
 
 	# Really, we should only get 200 OK unless there's something unusual
 	# going on with the HTTP server.
-	my $ret = int($resp->code() == 200);
+	# MediaWiki also throws a 301 on the / path because it wants to show
+	# a permalink for the user under any circumstances or something.
+	my $ret = int($resp->code() == 200 || $resp->code() == 301);
 
 	dprint "HTTP ($url): $ret (" . $resp->status_line() . ")\n";
 
