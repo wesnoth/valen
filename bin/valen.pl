@@ -33,51 +33,117 @@ use warnings;
 
 package valen;
 
+use JSON;
 use LWP::UserAgent;
 use Socket;
 
 $| = 1;
 
-my $VERSION = '0.0.1';
+my $VERSION = '0.0.2';
 
 my $debug = 0;
 
+################################################################################
+#                                CONFIGURATION                                 #
+################################################################################
+
 my %config = (
-	output_path				=> '/var/lib/valen/report',
-
-	hostname				=> 'wesnoth.org',
-	# NOTE: This needs to be updated if wesnoth.org's host IP ever changes.
-	host_ip					=> '144.76.5.6',
-
-	addons_hostname			=> 'add-ons.wesnoth.org',
-
-	addons_ports			=> {
-		dev => 15006,
-		stable => 15002
-		#oldstable => 15001,
-		#ancientstable => 15003,
-		#1.4 => 15005,
-		#trunk => 15004
-	},
-
-	mp_main_hostname		=> 'server.wesnoth.org',
-	mp_alt2_hostname		=> 'server2.wesnoth.org',
-	mp_alt3_hostname		=> 'server3.wesnoth.org',
-
-	mp_mux_port				=> 15000,
-
-	mp_main_ports			=> {
-		ancientstable => 14995,
-		oldstable => 14998,
-		stable => 14999,
-		dev => 14997,
-		trunk => 15000
-	},
-
-	web_url					=> 'http://wesnoth.org/',
-	forums_url				=> 'http://forums.wesnoth.org/',
-	wiki_url				=> 'http://wiki.wesnoth.org/',
+	output_path				=> '/var/lib/valen/report.json',
 );
+
+use constant {
+	IP_ASHEVIERE		=> '65.18.193.12',		# asheviere.wesnoth.org
+	IP_BALDRAS			=> '144.76.5.6',		# baldras.wesnoth.org
+	IP_GONZO			=> '193.7.178.1',		# server2.wesnoth.org [gonzo.dicp.de]
+	IP_BASILIC			=> '212.85.158.134',	# server3.wesnoth.org [basilic.tuxfamily.org]
+	IP_AI0867			=> '109.237.218.218',	# status.wesnoth.org [ai0867.net]
+};
+
+use constant {
+	PROBE_NONE				=>  0,
+	PROBE_HTTP				=>  1,
+	PROBE_GZC_CAMPAIGND		=> 10,
+	PROBE_GZC_WESNOTHD		=> 11,
+};
+
+my %campaignd_standard_ports = (
+	'1.8'   => 15001,
+	'1.10'  => 15002,
+	'1.11'  => 15006,
+	'trunk' => 15004,
+);
+
+my %wesnothd_standard_ports = (
+	'1.8'   => 14998,
+	'1.10'  => 14999,
+	'1.11'  => 14997,
+	'trunk' => 15000,
+);
+
+my @facilities = (
+	'wesnoth.org', {
+		ip					=> IP_BALDRAS,
+		desc				=> "Main server",
+		hidden				=> 1,
+		probe				=> PROBE_NONE,
+	},
+	'www.wesnoth.org', {
+		ip					=> IP_BALDRAS,
+		desc				=> "Wesnoth.org HTTP server and front page",
+		probe				=> PROBE_HTTP,
+	},
+	'wiki.wesnoth.org', {
+		ip					=> IP_BALDRAS,
+		desc				=> "Wesnoth.org wiki (MediaWiki)",
+		stats_url			=> "http://wiki.wesnoth.org/Special:Statistics",
+		probe				=> PROBE_HTTP,
+	},
+	'forums.wesnoth.org', {
+		ip					=> IP_BALDRAS,
+		desc				=> "Wesnoth.org forums board (phpBB)",
+		probe				=> PROBE_HTTP,
+	},
+	'add-ons.wesnoth.org', {
+		ip					=> IP_BALDRAS,
+		desc				=> "Official add-ons server instances (campaignd)",
+		probe				=> PROBE_GZC_CAMPAIGND,
+		instances			=> { %campaignd_standard_ports },
+	},
+	'server.wesnoth.org', {
+		ip					=> IP_BALDRAS,
+		desc				=> "Official main multiplayer games server (wesnothd)",
+		stats_url			=> "http://wesnothd.wesnoth.org/",
+		probe				=> PROBE_GZC_WESNOTHD,
+		instances			=> { '1.6' => 14995, %wesnothd_standard_ports },
+	},
+	'server2.wesnoth.org', {
+		ip					=> IP_GONZO,
+		desc				=> "Official alternate multiplayer games server #2 (wesnothd)",
+		probe				=> PROBE_GZC_WESNOTHD,
+		instances			=> { %wesnothd_standard_ports },
+	},
+	'server3.wesnoth.org', {
+		ip					=> IP_BASILIC,
+		desc				=> "Official alternate multiplayer games server #3 (wesnothd)",
+		probe				=> PROBE_GZC_WESNOTHD,
+		instances			=> { %wesnothd_standard_ports },
+	},
+	'status.wesnoth.org', {
+		ip					=> IP_AI0867,
+		desc				=> "Wesnoth.org status monitoring facility",
+		probe				=> PROBE_NONE,
+	},
+);
+
+################################################################################
+#                                   LIBRARY                                    #
+################################################################################
+
+# Various timeouts (in seconds).
+use constant {
+	HTTP_TIMEOUT			=> 10,
+	GZCLIENT_TIMEOUT		=> 10,
+};
 
 # A status of 0 indicates that the facility isn't working properly;
 # 1 indicates that it is. A status of 2 indicates that the facility
@@ -89,30 +155,19 @@ use constant {
 	STATUS_FAIL				=>  0,
 	STATUS_GOOD				=>  1,
 	STATUS_INCOMPLETE		=>  2,
-};
-
-my %status = ();
-# Build the status table with default values.
-for(qw(dns web wiki forums addons mp-main mp-alt2 mp-alt3)) {
-	$status{$_} = STATUS_UNKNOWN;
-}
-
-# Various timeouts (in seconds).
-use constant {
-	HTTP_TIMEOUT			=> 10,
-	GZCLIENT_TIMEOUT		=> 10,
+	STATUS_DNS_IS_BAD		=>  3,
 };
 
 sub dprint { print @_ if $debug }
 
 sub dwarn { warn @_ if $debug }
 
-{
-	#
-	# Small operation timer used to check how much time individual
-	# operations took when $debug is set to 1.
-	#
+################################################################
+# Small operation timer used to check how much time individual #
+# operations took when $debug is set to 1.                     #
+################################################################
 
+{
 	package otimer;
 
 	use Time::HiRes qw(gettimeofday tv_interval);
@@ -143,70 +198,11 @@ sub dwarn { warn @_ if $debug }
 	}
 }
 
-sub write_hash_to_file(\%$)
-{
-	my $hash_ref = shift;
-	my $out_path = shift;
-
-	# In order to avoid someone else reading $out_path mid-write,
-	# write the intermediate results to a new file that will later
-	# clobber $out_path.
-	my $int_path = $out_path . '.new';
-
-	open(my $out, '>', $int_path)
-		or die("Could not open '" . $int_path . "' for writing: " . $!);
-
-	foreach(keys %{$hash_ref}) {
-		print $out $_ . '=' . $hash_ref->{$_} . "\n";
-	}
-
-	# Save a timestamp for reference when reporting in the front-end.
-	print $out 'ts=' . time() . "\n";
-
-	close $out;
-
-	rename($int_path, $out_path)
-		or die("Could not replace '" . $out_path . "': " . $!);
-}
-
-sub check_url($)
-{
-	my $otimer = otimer->new();
-
-	my $url = shift;
-
-	my $ua = LWP::UserAgent->new();
-
-	$ua->agent(sprintf('codename Valen/%s %s', $VERSION, $ua->_agent()));
-	# 30 seconds should really be enough in the worst case.
-	$ua->timeout(HTTP_TIMEOUT);
-	# Don't follow redirects, they are used by the wesnoth.org admins to
-	# redirect users to status pages when things break.
-	$ua->max_redirect(0);
-	# A maximum of 100 KiB is a stretch, but whatever.
-	$ua->max_size(102400);
-	# No, we don't really want any extra processing here, just the HTTP
-	# response code.
-	$ua->parse_head(0);
-
-	my $resp = $ua->head($url);
-
-	# Really, we should only get 200 OK unless there's something unusual
-	# going on with the HTTP server.
-	# MediaWiki also throws a 301 on the / path because it wants to show
-	# a permalink for the user under any circumstances or something.
-	my $ret = int($resp->code() == 200 || $resp->code() == 301);
-
-	dprint "HTTP ($url): $ret (" . $resp->status_line() . ")\n";
-
-	return $ret;
-}
+################################################################
+# A minimalistic networked gzip packets client.                #
+################################################################
 
 {
-	#
-	# A minimalistic networked gzip packets client.
-	#
-
 	package gzclient;
 
 	use IO::Socket;
@@ -399,6 +395,66 @@ sub check_url($)
 	}
 }
 
+sub write_hash_to_file(\%$)
+{
+	my ($hash_ref, $out_path) = @_;
+
+	# In order to avoid someone else reading $out_path mid-write,
+	# write the intermediate results to a new file that will later
+	# clobber $out_path.
+	my $int_path = $out_path . '.new';
+
+	open(my $out, '>', $int_path)
+		or die("Could not open '" . $int_path . "' for writing: " . $!);
+
+	# Save a timestamp for reference when reporting in the front-end.
+	my $envelope = { ts => time(), facilities => $hash_ref };
+
+	#print $out encode_json($hash_ref);
+	print $out to_json($envelope, { utf8 => 1, pretty => 1 });
+
+	close $out;
+
+	rename($int_path, $out_path)
+		or die("Could not replace '" . $out_path . "': " . $!);
+}
+
+sub check_url($;$)
+{
+	my $otimer = otimer->new();
+
+	my ($url, $http_host) = @_;
+
+	my $ua = LWP::UserAgent->new();
+
+	$ua->agent(sprintf('codename Valen/%s %s', $VERSION, $ua->_agent()));
+	# 30 seconds should really be enough in the worst case.
+	$ua->timeout(HTTP_TIMEOUT);
+	# Don't follow redirects, they are used by the wesnoth.org admins to
+	# redirect users to status pages when things break.
+	$ua->max_redirect(0);
+	# A maximum of 100 KiB is a stretch, but whatever.
+	$ua->max_size(102400);
+	# No, we don't really want any extra processing here, just the HTTP
+	# response code.
+	$ua->parse_head(0);
+	# Set the HTTP hostname explicitly in case we are querying a plain IP
+	# address.
+	$ua->default_header('Host' => $http_host) if defined $http_host;
+
+	my $resp = $ua->head($url);
+
+	# Really, we should only get 200 OK unless there's something unusual
+	# going on with the HTTP server.
+	# MediaWiki also throws a 301 on the / path because it wants to show
+	# a permalink for the user under any circumstances or something.
+	my $ret = $resp->code() == 200 || $resp->code() == 301 ? STATUS_GOOD : STATUS_FAIL;
+
+	dprint "HTTP ($url): $ret (" . $resp->status_line() . ")\n";
+
+	return $ret;
+}
+
 sub empty_wml_node($)
 {
 	return '[' . $_[0] . "]\n[/" . $_[0] . "]\n";
@@ -413,7 +469,7 @@ sub check_campaignd($$)
 
 	if(!$client) {
 		dwarn "campaignd ($addr:$port): gzclient connection failed\n";
-		return 0;
+		return STATUS_FAIL;
 	}
 
 	if(!$client->send(empty_wml_node 'request_terms')) {
@@ -424,18 +480,18 @@ sub check_campaignd($$)
 
 	if(!defined $wml) {
 		dwarn "campaignd ($addr:$port): no server response\n";
-		return 0;
+		return STATUS_FAIL;
 	}
 
 	if($wml !~ m|^\[message]\n\s*message=\".*\"\n\[/message\]\n|) {
 		dwarn "campaignd ($addr:$port): server response is not a proper [message]\n";
 		dwarn "--cut here--\n" . $wml . "--cut here--\n";
-		return 0;
+		return STATUS_FAIL;
 	}
 
 	dprint "campaignd ($addr:$port): OK\n";
 
-	return 1;
+	return STATUS_GOOD;
 }
 
 sub check_wesnothd($$)
@@ -449,14 +505,14 @@ sub check_wesnothd($$)
 
 	if(!$client) {
 		dwarn "wesnothd ($addr:$port): gzclient connection failed\n";
-		return 0;
+		return STATUS_FAIL;
 	}
 
 	my $wml = $client->recv();
 
 	if(!defined $wml) {
 		dwarn "wesnothd ($addr:$port): no server response\n";
-		return 0;
+		return STATUS_FAIL;
 	}
 
 	# We now have the WML. According to Gambit and the MultiplayerServerWML
@@ -474,7 +530,7 @@ sub check_wesnothd($$)
 
 	dprint "wesnothd ($addr:$port): OK ($1)\n";
 
-	return 1;
+	return STATUS_GOOD;
 }
 
 ################################################################################
@@ -493,138 +549,120 @@ if(@ARGV && $ARGV[-1] !~ m{^-+}) {
 	$config{output_path} = $ARGV[-1];
 }
 
-################################################################################
-#                                                                              #
-# DNS CHECK                                                                    #
-#                                                                              #
-################################################################################
 
+sub drep($$$)
 {
+	my ($hostname, $operation, $text) = @_;
+	dprint "*** $hostname [$operation]: $text\n";
+}
 
-#
-# The add-ons server, forums, and wiki currently share the same host address
-# as the web server, so we don't need to check them here.
-#
+sub hvalue($$$)
+{
+	my ($hash_ref, $key, $default) = @_;
 
-my @unique_hosts = (
-	$config{hostname}, $config{mp_alt2_hostname}, $config{mp_alt3_hostname});
+	defined $default or $default = '';
 
-foreach my $hostname (@unique_hosts) {
-	my $otimer = otimer->new();
+	defined($hash_ref) &&
+	exists($hash_ref->{$key}) &&
+	defined($hash_ref->{$key})
+		? $hash_ref->{$key}
+		: $default;
+}
 
-	my (undef, undef, undef, undef, @addr) = gethostbyname($hostname);
 
-	my $passed = int(@addr > 0);
-	dprint "DNS ($hostname): $passed\n";
+my %status;
 
-	if(($status{dns} == STATUS_GOOD && !$passed) ||
-	   ($status{dns} == STATUS_FAIL && $passed)) {
-		$status{dns} = STATUS_INCOMPLETE;
-	} else { # elsif($status{dns} == STATUS_UNKNOWN) {
-		$status{dns} = $passed;
+for(my $k = 0; $k < @facilities; ++$k)
+{
+	# The @facilities structure is an array of host/struct pairs in order to
+	# keep it sorted a certain way without adding a 'priority' struct item or
+	# such, so we need to grab the element pair and advance the iteration by
+	# two each time.
+	my ($host, $def) = @facilities[$k++, $k];
+
+	my $st = {
+		dns			=> STATUS_UNKNOWN,
+		dns_ip		=> undef,
+		# Information for the front-end.
+		hidden		=> hvalue($def, 'hidden', 0),
+		desc		=> hvalue($def, 'desc', 'No description provided.'),
+		expected_ip	=> hvalue($def, 'ip', '0.0.0.0'),
+		stats_url	=> hvalue($def, 'stats_url', ''),
+	};
+
+	#
+	# DNS CHECK.
+	#
+
+	$st->{dns} = STATUS_UNKNOWN;
+
+	my (undef, undef, undef, undef, @addr) = gethostbyname($host);
+
+	if(@addr > 0) {
+		my $ip = inet_ntoa($addr[0]);
+		$st->{dns} = $ip ne $def->{ip} ? STATUS_DNS_IS_BAD : STATUS_GOOD;
+		$st->{dns_ip} = $ip;
+	} else {
+		$st->{dns} = STATUS_FAIL;
 	}
-}
 
-dprint "*** DNS: " . $status{dns} . "\n";
+	drep($host, "DNS", $st->{dns} . " (expected " . $st->{expected_ip} . ", got " . hvalue($st, 'dns_ip', '<NXDOMAIN>') .")");
 
-}
+	#
+	# FACILITY PROBING.
+	#
 
-################################################################################
-#                                                                              #
-# WEB/WIKI & FORUMS CHECK                                                      #
-#                                                                              #
-################################################################################
+	if($def->{probe} != PROBE_NONE) {
+		my ($inhost, $inhttphost) = ();
 
-{
+		if($st->{dns} == STATUS_GOOD) {
+			$inhost = $host;
+		} else {
+			$inhost = $def->{ip};
+			$inhttphost = $host;
+			drep($host, 'PROBE', 'DNS is bad, proceeding with IP and hostname from configuration: ' . $inhost . ' ' . $inhttphost);
+		}
 
-#
-# For these checks we only really need to know whether we get an OK status
-# from the server when fetching the relevant addresses.
-#
+		# Create an artificial stand-alone instance if the facility doesn't have
+		# multiple instances, so we don't need to have two versions of the probe
+		# selection and call below.
 
-$status{web} = check_url($config{web_url});
+		my $instances = exists($def->{instances})
+			? $def->{instances}
+			: { '*' => '*' };
 
-if($status{dns} != STATUS_GOOD && $status{web} != STATUS_GOOD) {
-	dprint "*** DNS issues, retrying web URL check with a known IP\n";
-	$status{web} = check_url('http://' . $config{host_ip} . '/');
-	dprint "*** Skipping forum and wiki checks due to DNS issues\n";
-} else {
-	$status{wiki} = check_url($config{wiki_url});
-	$status{forums} = check_url($config{forums_url});
-}
+		foreach my $iname (keys %$instances)
+		{
+			my $instatus = STATUS_UNKNOWN;
+			my $inport = $instances->{$iname}; # Ignored for non GZC probes.
 
-}
+			if($def->{probe} == PROBE_HTTP) {
+				$instatus = check_url('http://' . $inhost . '/', $inhttphost);
+			}
+			elsif($def->{probe} == PROBE_GZC_WESNOTHD) {
+				$instatus = check_wesnothd($inhost, $inport);
+			}
+			elsif($def->{probe} == PROBE_GZC_CAMPAIGND) {
+				$instatus = check_campaignd($inhost, $inport);
+			}
+			else {
+				drep($host, 'PROBE', 'Invalid probe type ' . $def->{probe});
+			}
 
-################################################################################
-#                                                                              #
-# ADD-ONS SERVER CHECK                                                         #
-#                                                                              #
-################################################################################
+			if($iname eq '*') {
+				$st->{status} = $instatus;
+			} else {
+				if(!exists $st->{instances}) {
+					$st->{instances} = {};
+				}
 
-{
-
-my $addr = $config{addons_hostname};
-
-foreach my $version (keys %{$config{addons_ports}}) {
-	my $port = $config{addons_ports}->{$version};
-	my $otimer = otimer->new();
-
-	my $port_status = check_campaignd($addr, $port);
-	$status{"addons-$version"} = $port_status;
-
-	if(($status{addons} == STATUS_GOOD && !$port_status) ||
-	   ($status{addons} == STATUS_FAIL && $port_status)) {
-	   $status{addons} = STATUS_INCOMPLETE;
-	} else { # elsif($status{addons} == STATUS_UNKNOWN) {
-		$status{addons} = $port_status;
+				$st->{instances}->{$iname}->{status} = $instatus;
+				$st->{instances}->{$iname}->{port} = $inport;
+			}
+		}
 	}
-}
 
-dprint "*** campaignd: " . $status{addons} . "\n";
-
-}
-
-################################################################################
-#                                                                              #
-# MULTIPLAYER SERVERS CHECK                                                    #
-#                                                                              #
-################################################################################
-
-{
-
-foreach my $version (keys %{$config{mp_main_ports}}) {
-	my $port = $config{mp_main_ports}->{$version};
-	my $otimer = otimer->new();
-
-	my $port_status = check_wesnothd($config{mp_main_hostname}, $port);
-	$status{"mp-main-$version"} = $port_status;
-}
-
-$status{'mp-main'} = check_wesnothd($config{mp_main_hostname}, $config{mp_mux_port});
-dprint "*** wesnothd 1: " . $status{'mp-main'} . "\n";
-
-foreach my $version (keys %{$config{mp_main_ports}}) {
-	my $port = $config{mp_main_ports}->{$version};
-	my $otimer = otimer->new();
-
-	my $port_status = check_wesnothd($config{mp_alt2_hostname}, $port);
-	$status{"mp-alt2-$version"} = $port_status;
-}
-
-$status{'mp-alt2'} = check_wesnothd($config{mp_alt2_hostname}, $config{mp_mux_port});
-dprint "*** wesnothd 2: " . $status{'mp-alt2'} . "\n";
-
-foreach my $version (keys %{$config{mp_main_ports}}) {
-	my $port = $config{mp_main_ports}->{$version};
-	my $otimer = otimer->new();
-
-	my $port_status = check_wesnothd($config{mp_alt3_hostname}, $port);
-	$status{"mp-alt3-$version"} = $port_status;
-}
-
-$status{'mp-alt3'} = check_wesnothd($config{mp_alt3_hostname}, $config{mp_mux_port});
-dprint "*** wesnothd 3: " . $status{'mp-alt3'} . "\n";
-
+	$status{$host} = $st;
 }
 
 ################################################################################
