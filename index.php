@@ -3,7 +3,7 @@
  * codename "Valen": a Wesnoth facilities status page
  * index.php: Web front-end
  *
- * Copyright (C) 2012, 2013 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>
+ * Copyright (C) 2012 - 2014 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -356,7 +356,7 @@ make sure to notify us through any of our support channels:</p>
 
 <div id="footer">
 	<div id="note">
-		<p>Copyright &copy; 2003-2013 The Battle for Wesnoth</p>
+		<p>Copyright &copy; 2003-2014 The Battle for Wesnoth</p>
 		<p>Supported by <a href="http://www.jexiste.fr/">Jexiste</a>.</p>
 	</div>
 </div>
