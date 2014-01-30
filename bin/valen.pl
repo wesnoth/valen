@@ -585,6 +585,7 @@ for(my $k = 0; $k < @facilities; ++$k)
 		dns_ip		=> undef,
 		# Information for the front-end.
 		hidden		=> hvalue($def, 'hidden', 0),
+		name		=> hvalue($def, 'name', $host),
 		desc		=> hvalue($def, 'desc', 'No description provided.'),
 		expected_ip	=> hvalue($def, 'ip', '0.0.0.0'),
 		stats_url	=> hvalue($def, 'stats_url', ''),
