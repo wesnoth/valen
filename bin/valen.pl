@@ -404,9 +404,9 @@ sub dwarn { warn @_ if $debug }
 	}
 }
 
-sub write_hash_to_file(\%$)
+sub write_object_to_file($$)
 {
-	my ($hash_ref, $out_path) = @_;
+	my ($obj_ref, $out_path) = @_;
 
 	# In order to avoid someone else reading $out_path mid-write,
 	# write the intermediate results to a new file that will later
@@ -417,7 +417,7 @@ sub write_hash_to_file(\%$)
 		or die("Could not open '" . $int_path . "' for writing: " . $!);
 
 	# Save a timestamp for reference when reporting in the front-end.
-	my $envelope = { ts => time(), facilities => $hash_ref };
+	my $envelope = { ts => time(), facilities => $obj_ref };
 
 	#print $out encode_json($hash_ref);
 	print $out to_json($envelope, { utf8 => 1, pretty => 1 });
@@ -579,7 +579,7 @@ sub hvalue($$$)
 }
 
 
-my %status;
+my @status;
 
 for(my $k = 0; $k < @facilities; ++$k)
 {
@@ -672,7 +672,7 @@ for(my $k = 0; $k < @facilities; ++$k)
 		}
 	}
 
-	$status{$host} = $st;
+	push @status, { $host => $st };
 }
 
 ################################################################################
@@ -683,7 +683,7 @@ for(my $k = 0; $k < @facilities; ++$k)
 
 dprint "*** Writing report to " . $config{output_path} . "\n";
 
-write_hash_to_file(%status, $config{output_path});
+write_object_to_file(\@status, $config{output_path});
 
 dprint "*** Finished\n";
 
