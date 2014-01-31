@@ -66,18 +66,18 @@ use constant {
 	PROBE_GZC_WESNOTHD		=> 11,
 };
 
-my %campaignd_standard_ports = (
-	'1.8'   => 15001,
-	'1.10'  => 15002,
-	'1.11'  => 15006,
-	'trunk' => 15004,
+my @campaignd_standard_ports = (
+	{ '1.8'   => 15001 },
+	{ '1.10'  => 15002 },
+	{ '1.11'  => 15006 },
+	{ 'trunk' => 15004 },
 );
 
-my %wesnothd_standard_ports = (
-	'1.8'   => 14998,
-	'1.10'  => 14999,
-	'1.11'  => 14997,
-	'trunk' => 15000,
+my @wesnothd_standard_ports = (
+	{ '1.8'   => 14998 },
+	{ '1.10'  => 14999 },
+	{ '1.11'  => 14997 },
+	{ 'trunk' => 15000 },
 );
 
 my @facilities = (
@@ -112,7 +112,7 @@ my @facilities = (
 		name				=> "Add-ons Server",
 		desc				=> "Official add-ons server (campaignd)",
 		probe				=> PROBE_GZC_CAMPAIGND,
-		instances			=> { %campaignd_standard_ports },
+		instances			=> [ @campaignd_standard_ports ],
 	},
 	'server.wesnoth.org', {
 		ip					=> IP_BALDRAS,
@@ -120,21 +120,21 @@ my @facilities = (
 		desc				=> "Official main multiplayer games server (wesnothd on server.wesnoth.org)",
 		stats_url			=> "http://wesnothd.wesnoth.org/",
 		probe				=> PROBE_GZC_WESNOTHD,
-		instances			=> { '1.6' => 14995, %wesnothd_standard_ports },
+		instances			=> [ { '1.6' => 14995 }, @wesnothd_standard_ports ],
 	},
 	'server2.wesnoth.org', {
 		ip					=> IP_GONZO,
 		name				=> "Alternate MP Server 2",
 		desc				=> "Official alternate multiplayer games server #2 (wesnothd on server2.wesnoth.org)",
 		probe				=> PROBE_GZC_WESNOTHD,
-		instances			=> { %wesnothd_standard_ports },
+		instances			=> [ @wesnothd_standard_ports ],
 	},
 	'server3.wesnoth.org', {
 		ip					=> IP_BASILIC,
 		name				=> "Alternate MP Server 3",
 		desc				=> "Official alternate multiplayer games server #3 (wesnothd on server3.wesnoth.org)",
 		probe				=> PROBE_GZC_WESNOTHD,
-		instances			=> { %wesnothd_standard_ports },
+		instances			=> [ @wesnothd_standard_ports ],
 	},
 	'status.wesnoth.org', {
 		ip					=> IP_AI0867,
@@ -639,12 +639,13 @@ for(my $k = 0; $k < @facilities; ++$k)
 
 		my $instances = exists($def->{instances})
 			? $def->{instances}
-			: { '*' => '*' };
+			: [ { '*' => '*' } ];
 
-		foreach my $iname (keys %$instances)
+		foreach my $inentry (@$instances)
 		{
+			my $iname = (keys %$inentry)[0];
 			my $instatus = STATUS_UNKNOWN;
-			my $inport = $instances->{$iname}; # Ignored for non GZC probes.
+			my $inport = $inentry->{$iname}; # Ignored for non GZC probes.
 
 			if($def->{probe} == PROBE_HTTP) {
 				$instatus = check_url('http://' . $inhost . '/', $inhttphost);
@@ -663,16 +664,21 @@ for(my $k = 0; $k < @facilities; ++$k)
 				$st->{status} = $instatus;
 			} else {
 				if(!exists $st->{instances}) {
-					$st->{instances} = {};
+					$st->{instances} = [];
 				}
 
-				$st->{instances}->{$iname}->{status} = $instatus;
-				$st->{instances}->{$iname}->{port} = $inport;
+				push @{$st->{instances}}, {
+					id     => $iname,
+					status => $instatus,
+					port   => $inport,
+				};
 			}
 		}
 	}
 
-	push @status, { $host => $st };
+	$st->{hostname} = $host;
+
+	push @status, $st;
 }
 
 ################################################################################
