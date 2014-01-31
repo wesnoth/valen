@@ -93,19 +93,28 @@ my @facilities = (
 		name				=> "Web Server",
 		desc				=> "HTTP server and front page",
 		probe				=> PROBE_HTTP,
+		links				=> [
+			{ title => 'Front Page', url => 'http://www.wesnoth.org/' },
+		],
 	},
 	'wiki.wesnoth.org', {
 		ip					=> IP_BALDRAS,
 		name				=> "Wiki",
 		desc				=> "MediaWiki application",
-		stats_url			=> "http://wiki.wesnoth.org/Special:Statistics",
 		probe				=> PROBE_HTTP,
+		links				=> [
+			{ title => 'Starting Points', url => 'http://wiki.wesnoth.org/' },
+			{ title => 'Statistics',      url => 'http://wiki.wesnoth.org/Special:Statistics' },
+		],
 	},
 	'forums.wesnoth.org', {
 		ip					=> IP_BALDRAS,
 		name				=> "Forums Board",
 		desc				=> "phpBB application",
 		probe				=> PROBE_HTTP,
+		links				=> [
+			{ title => 'Board Index', url => 'http://forums.wesnoth.org/' },
+		],
 	},
 	'add-ons.wesnoth.org', {
 		ip					=> IP_BALDRAS,
@@ -113,14 +122,20 @@ my @facilities = (
 		desc				=> "Official add-ons server (campaignd)",
 		probe				=> PROBE_GZC_CAMPAIGND,
 		instances			=> [ @campaignd_standard_ports ],
+		links				=> [
+			{ title => 'Web Index', url => 'http://add-ons.wesnoth.org/' },
+		],
 	},
 	'server.wesnoth.org', {
 		ip					=> IP_BALDRAS,
 		name				=> "Primary MP Server",
 		desc				=> "Official main multiplayer games server (wesnothd on server.wesnoth.org)",
-		stats_url			=> "http://wesnothd.wesnoth.org/",
 		probe				=> PROBE_GZC_WESNOTHD,
 		instances			=> [ { '1.6' => 14995 }, @wesnothd_standard_ports ],
+		links				=> [
+			{ title => 'Server Statistics', url => 'http://wesnothd.wesnoth.org/' },
+			{ title => 'Replays Directory', url => 'http://replays.wesnoth.org/' },
+		],
 	},
 	'server2.wesnoth.org', {
 		ip					=> IP_GONZO,
@@ -597,7 +612,7 @@ for(my $k = 0; $k < @facilities; ++$k)
 		name		=> hvalue($def, 'name', $host),
 		desc		=> hvalue($def, 'desc', 'No description provided.'),
 		expected_ip	=> hvalue($def, 'ip', '0.0.0.0'),
-		stats_url	=> hvalue($def, 'stats_url', ''),
+		links		=> hvalue($def, 'links', []),
 	};
 
 	#
