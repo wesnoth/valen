@@ -97,6 +97,15 @@ my @facilities = (
 			{ title => 'Front Page', url => 'http://www.wesnoth.org/' },
 		],
 	},
+	'forums.wesnoth.org', {
+		ip					=> IP_BALDRAS,
+		name				=> "Forums Board",
+		desc				=> "phpBB application",
+		probe				=> PROBE_HTTP,
+		links				=> [
+			{ title => 'Board Index', url => 'http://forums.wesnoth.org/' },
+		],
+	},
 	'wiki.wesnoth.org', {
 		ip					=> IP_BALDRAS,
 		name				=> "Wiki",
@@ -105,15 +114,6 @@ my @facilities = (
 		links				=> [
 			{ title => 'Starting Points', url => 'http://wiki.wesnoth.org/' },
 			{ title => 'Statistics',      url => 'http://wiki.wesnoth.org/Special:Statistics' },
-		],
-	},
-	'forums.wesnoth.org', {
-		ip					=> IP_BALDRAS,
-		name				=> "Forums Board",
-		desc				=> "phpBB application",
-		probe				=> PROBE_HTTP,
-		links				=> [
-			{ title => 'Board Index', url => 'http://forums.wesnoth.org/' },
 		],
 	},
 	'add-ons.wesnoth.org', {
