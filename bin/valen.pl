@@ -156,6 +156,7 @@ my @facilities = (
 		name				=> "Status Service",
 		desc				=> "External status monitoring facility",
 		probe				=> PROBE_NONE,
+		hidden				=> 1,
 	},
 );
 
