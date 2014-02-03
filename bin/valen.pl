@@ -67,18 +67,22 @@ use constant {
 };
 
 my @campaignd_standard_ports = (
-	{ '1.8'   => 15001 },
-	{ '1.10'  => 15002 },
-	{ '1.11'  => 15006 },
-	{ 'trunk' => 15004 },
+	{ '1.10'				=> 15002 },
+	{ '1.11'				=> 15006 },
+	{ '1.8'					=> 15001 },
+	{ 'Testing'				=> 15004 },
 );
 
 my @wesnothd_standard_ports = (
-	{ '1.8'   => 14998 },
-	{ '1.10'  => 14999 },
-	{ '1.11'  => 14997 },
-	{ 'trunk' => 15000 },
+	{ '1.10'				=> 14999 },
+	{ '1.11'				=> 14997 },
+	{ '1.8'					=> 14998 },
+	{ 'Master'				=> 15000 },
 );
+
+my @wesnothd_ports_all = @wesnothd_standard_ports;
+push @wesnothd_ports_all, $wesnothd_ports_all[-1];
+$wesnothd_ports_all[-2] = { '1.6' => 14995 };
 
 my @facilities = (
 	'wesnoth.org', {
@@ -129,9 +133,9 @@ my @facilities = (
 	'server.wesnoth.org', {
 		ip					=> IP_BALDRAS,
 		name				=> "Primary MP Server",
-		desc				=> "Official main multiplayer games server (wesnothd on server.wesnoth.org)",
+		desc				=> "Official main multiplayer games server (wesnothd)",
 		probe				=> PROBE_GZC_WESNOTHD,
-		instances			=> [ { '1.6' => 14995 }, @wesnothd_standard_ports ],
+		instances			=> [ @wesnothd_ports_all ],
 		links				=> [
 			{ title => 'Server Statistics', url => 'http://wesnothd.wesnoth.org/' },
 			{ title => 'Replays Directory', url => 'http://replays.wesnoth.org/' },
@@ -140,14 +144,14 @@ my @facilities = (
 	'server2.wesnoth.org', {
 		ip					=> IP_GONZO,
 		name				=> "Alternate MP Server 2",
-		desc				=> "Official alternate multiplayer games server #2 (wesnothd on server2.wesnoth.org)",
+		desc				=> "Official alternate multiplayer games server #2 (wesnothd)",
 		probe				=> PROBE_GZC_WESNOTHD,
 		instances			=> [ @wesnothd_standard_ports ],
 	},
 	'server3.wesnoth.org', {
 		ip					=> IP_BASILIC,
 		name				=> "Alternate MP Server 3",
-		desc				=> "Official alternate multiplayer games server #3 (wesnothd on server3.wesnoth.org)",
+		desc				=> "Official alternate multiplayer games server #3 (wesnothd)",
 		probe				=> PROBE_GZC_WESNOTHD,
 		instances			=> [ @wesnothd_standard_ports ],
 	},
