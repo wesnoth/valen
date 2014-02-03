@@ -450,8 +450,6 @@ sub write_object_to_file($$)
 
 sub check_url($;$)
 {
-	my $otimer = otimer->new();
-
 	my ($url, $http_host) = @_;
 
 	my $ua = LWP::UserAgent->new();
@@ -525,8 +523,6 @@ sub check_campaignd($$)
 
 sub check_wesnothd($$)
 {
-	my $otimer = otimer->new();
-
 	my $addr = shift;
 	my $port = shift;
 
@@ -665,19 +661,28 @@ for(my $k = 0; $k < @facilities; ++$k)
 		{
 			my $iname = (keys %$inentry)[0];
 			my $instatus = STATUS_UNKNOWN;
+			my $inresponse_time = undef;
 			my $inport = $inentry->{$iname}; # Ignored for non GZC probes.
 
-			if($def->{probe} == PROBE_HTTP) {
-				$instatus = check_url('http://' . $inhost . '/', $inhttphost);
-			}
-			elsif($def->{probe} == PROBE_GZC_WESNOTHD) {
-				$instatus = check_wesnothd($inhost, $inport);
-			}
-			elsif($def->{probe} == PROBE_GZC_CAMPAIGND) {
-				$instatus = check_campaignd($inhost, $inport);
-			}
-			else {
-				drep($host, 'PROBE', 'Invalid probe type ' . $def->{probe});
+			{
+				my $otimer = otimer->new();
+
+				if($def->{probe} == PROBE_HTTP) {
+					$instatus = check_url('http://' . $inhost . '/', $inhttphost);
+				}
+				elsif($def->{probe} == PROBE_GZC_WESNOTHD) {
+					$instatus = check_wesnothd($inhost, $inport);
+				}
+				elsif($def->{probe} == PROBE_GZC_CAMPAIGND) {
+					$instatus = check_campaignd($inhost, $inport);
+				}
+				else {
+					drep($host, 'PROBE', 'Invalid probe type ' . $def->{probe});
+				}
+
+				if($instatus != STATUS_UNKNOWN) {
+					$inresponse_time = $otimer->elapsed() * 1000; # millisecs
+				}
 			}
 
 			if($iname eq '*') {
@@ -688,9 +693,10 @@ for(my $k = 0; $k < @facilities; ++$k)
 				}
 
 				push @{$st->{instances}}, {
-					id     => $iname,
-					status => $instatus,
-					port   => $inport,
+					id					=> $iname,
+					status				=> $instatus,
+					port				=> $inport,
+					response_time		=> $inresponse_time,
 				};
 			}
 		}
