@@ -211,7 +211,7 @@ sub dwarn { warn @_ if $debug }
 		return $self;
 	}
 
-	sub ellapsed
+	sub elapsed
 	{
 		my ($self) = @_;
 
@@ -222,7 +222,7 @@ sub dwarn { warn @_ if $debug }
 	{
 		my ($self) = @_;
 
-		printf("<took %.2f seconds>\n", $self->ellapsed())
+		printf("<took %.2f seconds>\n", $self->elapsed())
 			if $debug;
 	}
 }
