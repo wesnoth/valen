@@ -109,7 +109,7 @@ function valen_make_synthetic_dns_facility()
 	{
 		$dns_status = STATUS_FAIL;
 	}
-	else if (sizeof($dns_bad) != 0)
+	else if (!empty($dns_bad))
 	{
 		$dns_status = STATUS_INCOMPLETE;
 	}
@@ -161,7 +161,7 @@ function valen_facility_status_overall($facility_id)
 
 		$instances = $facility['instances'];
 
-		if (is_array($instances) && sizeof($instances))
+		if (is_array($instances) && !empty($instances))
 		{
 			$at_least_one_instance_good = false;
 			$at_least_one_instance_bad = false;
