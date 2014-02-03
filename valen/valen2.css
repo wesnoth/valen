@@ -1,0 +1,195 @@
+/*
+ * codename "Valen": a Wesnoth facilities status page
+ * valen2.css: Basic stylesheet
+ *
+ * Copyright (C) 2012 - 2014 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice is present in all copies.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+.fl { float: left;    }
+.fr { float: right;   }
+.fc { clear: both;    }
+.fb { display: block; }
+
+.al-left   { text-align: left;   }
+.al-right  { text-align: right;  }
+.al-center { text-align: center; }
+
+.chronology {
+	font-size: 0.78em;
+}
+
+.facilities, .facilities > li {
+	display: block;
+}
+
+.facilities {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.facilities > li {
+	clear: both;
+	padding: 0.5em 0.8em;
+	margin: 0.5em 0;
+	border-radius: 6px;
+}
+
+.facilities > li:hover {
+	background: #fed;
+}
+
+.facilities li .details, .facilities li .dnsreport, .facilities li .inreport {
+	font-size: 0.85em;
+}
+
+.facilities li .details {
+	clear: both;
+}
+
+.facilities .details > span {
+	display: block;
+}
+
+.header, .inst {
+	font-weight: bold;
+}
+
+.header dt, .header dd {
+	margin: 0;
+	padding: 0;
+}
+
+.header dt {
+	float: left;
+}
+
+.header dd {
+	float: right;
+}
+
+.facilities li .header .hostname {
+	font-weight: normal;
+	font-size: 0.8em;
+	color: #aaa;
+	visibility: hidden;
+}
+
+.facilities li:hover .header .hostname {
+	visibility: visible;
+}
+
+.inst dt, .inst dd {
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+
+.header .semaphore {
+	font-size: 2em;
+	margin-left: 0.2em;
+	float: left; /* IE 8 */
+}
+
+.inreport {
+	/*display: block;
+	background: #fed;
+	margin-right: auto;
+	width: auto;
+	max-width: 22em;*/
+}
+
+.inreport {
+	font-weight: bold;
+	list-style: none;
+}
+
+.inreport li {
+	display: inline;
+}
+
+.inreport .semaphore {
+	font-size: 2em;
+}
+
+.inreport li .inname {
+	float: left;
+}
+
+.inreport li .semaphore {
+	float: left;
+	margin: 0 0.5em 0 0.25em;
+}
+
+.red    { color: #b22;        }
+.green  { color: #090;        }
+.yellow { color: #d60;        }
+.gray   { color: #aaa;        }
+
+
+.red .semaphore    { text-shadow: 0px 0px 0.2em #f66; }
+.green .semaphore  { text-shadow: 0px 0px 0.2em #0f0; }
+.yellow .semaphore { text-shadow: 0px 0px 0.2em #fa0; }
+
+
+.bold   { font-weight: bold;  }
+
+.dnsreport ul, .dnsreport li {
+	padding: 0;
+}
+
+.status-report-unavailable {
+	background: #b22;
+	color: #fff;
+	padding: 1em;
+	border-radius: 2px;
+	text-align: center;
+}
+
+.status-label
+{
+	color: #fff;
+	text-shadow: 0px -1px 0px #333;
+	padding: 0.5em 1em;
+	border-radius: 2px;
+}
+
+.green .status-label {
+	background: #090;
+/* 	box-shadow: 0px 0px 4px #0f0; */
+}
+
+.yellow .status-label {
+	background: #d60;
+/* 	box-shadow: 0px 0px 4px #f80; */
+}
+
+.red .status-label {
+	background: #b22;
+/* 	box-shadow: 0px 0px 4px #f00; */
+}
+
+.gray .status-label {
+	background: #aaa;
+}
+
+#page-description-toggle {
+	font-size: 0.75em;
+	padding-top: 2em;
+}
