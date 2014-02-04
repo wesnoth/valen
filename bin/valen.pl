@@ -438,7 +438,6 @@ sub write_object_to_file($$)
 	# Save a timestamp for reference when reporting in the front-end.
 	my $envelope = { ts => time(), facilities => $obj_ref };
 
-	#print $out encode_json($hash_ref);
 	print $out to_json($envelope, { utf8 => 1, pretty => 1 });
 
 	close $out;
@@ -558,6 +557,17 @@ sub check_wesnothd($$)
 }
 
 ##
+# Resolves the given hostname and returns the first address found, or undef
+# if it coudl not be resolved.
+##
+sub resolve_hostname_first($)
+{
+	my (undef, undef, undef, undef, @addr) = gethostbyname shift;
+
+	return @addr > 0 ? inet_ntoa($addr[0]) : undef;
+}
+
+##
 # Retrieve a value from a hash entry, or a fallback value if the hash entry or
 # the hash itself don't exist.
 #
@@ -634,19 +644,16 @@ for(my $k = 0; $k < @facilities; ++$k)
 	# DNS CHECK.
 	#
 
-	$st->{dns} = STATUS_UNKNOWN;
+	my $ip = resolve_hostname_first($host);
 
-	my (undef, undef, undef, undef, @addr) = gethostbyname($host);
-
-	if(@addr > 0) {
-		my $ip = inet_ntoa($addr[0]);
+	if(defined $ip) {
 		$st->{dns} = $ip ne $def->{ip} ? STATUS_DNS_IS_BAD : STATUS_GOOD;
 		$st->{dns_ip} = $ip;
 	} else {
 		$st->{dns} = STATUS_FAIL;
 	}
 
-	drep($host, "DNS", $st->{dns} . " (expected " . $st->{expected_ip} . ", got " . hvalue($st, 'dns_ip', '<NXDOMAIN>') .")");
+	drep($host, "DNS", $st->{dns} . " (expected " . $def->{ip} . ", got " . ($ip or 'NXDOMAIN') .")");
 
 	#
 	# FACILITY PROBING.
