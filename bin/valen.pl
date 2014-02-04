@@ -33,6 +33,7 @@ use warnings;
 
 package valen;
 
+use Getopt::Long;
 use JSON;
 use LWP::UserAgent;
 use Socket;
@@ -593,15 +594,11 @@ sub hvalue($$$)
 #                                                                              #
 ################################################################################
 
-foreach(@ARGV) {
-	if($_ eq '--debug' || $_ eq '-d') {
-		$debug = 1;
-	}
-}
+GetOptions(
+	'debug'			=> \$debug,
+) or die "Usage: $0 [-d | --debug] report_file_path\n";
 
-if(@ARGV && $ARGV[-1] !~ m{^-+}) {
-	$config{output_path} = $ARGV[-1];
-}
+$config{output_path} = shift(@ARGV) if @ARGV;
 
 
 ################################################################################
