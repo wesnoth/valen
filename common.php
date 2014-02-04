@@ -47,7 +47,7 @@ $refresh_interval = 900;
  */
 function valen_load_json($file)
 {
-	global $report, $report_ts;
+	global $report, $report_ts, $refresh_interval;
 
 	$json = @file_get_contents($file);
 
