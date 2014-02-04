@@ -723,6 +723,7 @@ for(my $k = 0; $k < @facilities; ++$k)
 
 			if($iname eq '*') {
 				$st->{status} = $instatus;
+				$st->{response_time} = $inresponse_time;
 			} else {
 				push @{$st->{instances}}, {
 					id					=> $iname,
