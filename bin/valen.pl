@@ -224,7 +224,7 @@ sub dwarn { warn @_ if $debug }
 		my ($self) = @_;
 
 		printf("<took %.2f seconds>\n", $self->elapsed())
-			if $debug;
+			if $debug > 1;
 	}
 }
 
@@ -600,7 +600,7 @@ sub hvalue($$$)
 ################################################################################
 
 GetOptions(
-	'debug'			=> \$debug,
+	'debug+'			=> \$debug,
 ) or die "Usage: $0 [-d | --debug] report_file_path [refresh_interval]\n";
 
 $config{output_path} = shift(@ARGV) if @ARGV;
