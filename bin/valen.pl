@@ -24,7 +24,7 @@
 
 #
 # Usage:
-#   valen.pl [-d | --debug] report_file_path
+#   valen.pl [-d | --debug] report_file_path refresh_interval
 #
 
 use 5.010;
@@ -50,6 +50,7 @@ my $debug = 0;
 
 my %config = (
 	output_path				=> '/var/lib/valen/report.json',
+	refresh_interval		=> 900,
 );
 
 use constant {
@@ -437,7 +438,11 @@ sub write_object_to_file($$)
 		or die("Could not open '" . $int_path . "' for writing: " . $!);
 
 	# Save a timestamp for reference when reporting in the front-end.
-	my $envelope = { ts => time(), facilities => $obj_ref };
+	my $envelope = {
+		ts					=> time(),
+		facilities			=> $obj_ref,
+		refresh_interval	=> $config{refresh_interval},
+	};
 
 	print $out to_json($envelope, { utf8 => 1, pretty => 1 });
 
@@ -596,9 +601,10 @@ sub hvalue($$$)
 
 GetOptions(
 	'debug'			=> \$debug,
-) or die "Usage: $0 [-d | --debug] report_file_path\n";
+) or die "Usage: $0 [-d | --debug] report_file_path [refresh_interval]\n";
 
 $config{output_path} = shift(@ARGV) if @ARGV;
+$config{refresh_interval} = shift(@ARGV) if @ARGV;
 
 
 ################################################################################
