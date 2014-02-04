@@ -81,8 +81,7 @@ my @wesnothd_standard_ports = (
 );
 
 my @wesnothd_ports_all = @wesnothd_standard_ports;
-push @wesnothd_ports_all, $wesnothd_ports_all[-1];
-$wesnothd_ports_all[-2] = { '1.6' => 14995 };
+splice @wesnothd_ports_all, -1, 0, { '1.6' => 14995 };
 
 my @facilities = (
 	'wesnoth.org', {
