@@ -337,7 +337,7 @@ sub dwarn { warn @_ if $debug }
 
 		my $conn_num = unpack('N', $buf);
 
-		$self->dprint("handshake succeeded ($conn_num)\n");
+		$self->dprint("handshake succeeded ($conn_num)\n") if $debug > 1;
 
 		$self->{_sock} = $sock;
 		$self->{_conn_num} = $conn_num;
