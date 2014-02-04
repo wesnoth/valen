@@ -606,6 +606,12 @@ GetOptions(
 $config{output_path} = shift(@ARGV) if @ARGV;
 $config{refresh_interval} = shift(@ARGV) if @ARGV;
 
+dprint "Wesnoth.org Site Status Service (codename 'Valen') version $VERSION\n" .
+       "\n" .
+       "Output path: " . $config{output_path} . "\n" .
+       "Front-end refresh interval: " . $config{refresh_interval} . "\n" .
+       "\n";
+
 
 ################################################################################
 #                                                                              #
