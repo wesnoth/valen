@@ -52,11 +52,11 @@ my %config = (
 );
 
 use constant {
-	IP_ASHEVIERE		=> '65.18.193.12',		# asheviere.wesnoth.org
-	IP_BALDRAS			=> '144.76.5.6',		# baldras.wesnoth.org
-	IP_GONZO			=> '193.7.178.1',		# server2.wesnoth.org [gonzo.dicp.de]
-	IP_BASILIC			=> '212.85.158.134',	# server3.wesnoth.org [basilic.tuxfamily.org]
-	IP_AI0867			=> '109.237.218.218',	# status.wesnoth.org [ai0867.net]
+	IP_ASHEVIERE			=> '65.18.193.12',		# asheviere.wesnoth.org
+	IP_BALDRAS				=> '144.76.5.6',		# baldras.wesnoth.org
+	IP_GONZO				=> '193.7.178.1',		# server2.wesnoth.org [gonzo.dicp.de]
+	IP_BASILIC				=> '212.85.158.134',	# server3.wesnoth.org [basilic.tuxfamily.org]
+	IP_AI0867				=> '109.237.218.218',	# status.wesnoth.org [ai0867.net]
 };
 
 use constant {
@@ -557,6 +557,26 @@ sub check_wesnothd($$)
 	return STATUS_GOOD;
 }
 
+##
+# Retrieve a value from a hash entry, or a fallback value if the hash entry or
+# the hash itself don't exist.
+#
+# If no fallback is specified, the empty string is used.
+##
+sub hvalue($$$)
+{
+	my ($hash_ref, $key, $default) = @_;
+
+	defined $default or $default = '';
+
+	defined($hash_ref) &&
+	exists($hash_ref->{$key}) &&
+	defined($hash_ref->{$key})
+		? $hash_ref->{$key}
+		: $default;
+}
+
+
 ################################################################################
 #                                                                              #
 # COMMAND LINE CONFIGURATION                                                   #
@@ -574,27 +594,22 @@ if(@ARGV && $ARGV[-1] !~ m{^-+}) {
 }
 
 
+################################################################################
+#                                                                              #
+# PROBING                                                                      #
+#                                                                              #
+################################################################################
+
+my @status;
+
+##
+# Print information about the current action in debug mode.
+##
 sub drep($$$)
 {
 	my ($hostname, $operation, $text) = @_;
 	dprint "*** $hostname [$operation]: $text\n";
 }
-
-sub hvalue($$$)
-{
-	my ($hash_ref, $key, $default) = @_;
-
-	defined $default or $default = '';
-
-	defined($hash_ref) &&
-	exists($hash_ref->{$key}) &&
-	defined($hash_ref->{$key})
-		? $hash_ref->{$key}
-		: $default;
-}
-
-
-my @status;
 
 for(my $k = 0; $k < @facilities; ++$k)
 {
@@ -652,16 +667,22 @@ for(my $k = 0; $k < @facilities; ++$k)
 		# multiple instances, so we don't need to have two versions of the probe
 		# selection and call below.
 
-		my $instances = exists($def->{instances})
-			? $def->{instances}
-			: [ { '*' => '*' } ];
+		my $instances;
+
+		if(exists($def->{instances})) {
+			$instances = $def->{instances};
+			$st->{instances} = [];
+		} else {
+			$instances = [ { '*' => '*' } ];
+		}
 
 		foreach my $inentry (@$instances)
 		{
 			my $iname = (keys %$inentry)[0];
+			my $inport = $inentry->{$iname}; # Ignored for non GZC probes.
+
 			my $instatus = STATUS_UNKNOWN;
 			my $inresponse_time = undef;
-			my $inport = $inentry->{$iname}; # Ignored for non GZC probes.
 
 			{
 				my $otimer = otimer->new();
@@ -687,10 +708,6 @@ for(my $k = 0; $k < @facilities; ++$k)
 			if($iname eq '*') {
 				$st->{status} = $instatus;
 			} else {
-				if(!exists $st->{instances}) {
-					$st->{instances} = [];
-				}
-
 				push @{$st->{instances}}, {
 					id					=> $iname,
 					status				=> $instatus,
