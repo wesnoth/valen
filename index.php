@@ -25,6 +25,29 @@
 define('IN_VALEN', true);
 include('./common.php');
 
+function vweb_format_response_time($rtime)
+{
+	$rtime_display_text = 'Last response time: ';
+
+	if ($rtime !== null)
+	{
+		if ($rtime > 1000)
+		{
+			$rtime_display_text .= round($rtime / 1000, 1) . ' s';
+		}
+		else
+		{
+			$rtime_display_text .= round($rtime, 1) . ' ms';
+		}
+	}
+	else
+	{
+		$rtime_display_text .= 'N/A';
+	}
+
+	return htmlentities($rtime_display_text);
+}
+
 /*
  * Print subreport for a single facility instance.
  */
@@ -32,6 +55,8 @@ function vweb_process_instance($idata)
 {
 	$iid = $idata['id'];
 	$status = $idata['status'];
+
+	$rtime = @$idata['response_time'];
 
 	$traffic_light_color = $traffic_light_text = '';
 
@@ -47,7 +72,7 @@ function vweb_process_instance($idata)
 	}
 
 	echo '<li>' .
-		'<span class="instatus">' .
+		'<span class="instatus" title="' . vweb_format_response_time($rtime) . '">' .
 		'<span class="inname">' . $iid . '</span>' .
 		'<span class="' . $traffic_light_color . '">' .
 			'<span class="status-label '. $traffic_light_color . '">' . $traffic_light_text . '</span>' .
@@ -75,6 +100,7 @@ function vweb_process_facility($fid, $fdata)
 	$links = @$fdata['links'];
 	$broken_dns_hostnames = @$fdata['broken_dns_hostnames'];
 	$instances = @$fdata['instances'];
+	$rtime = @$fdata['response_time'];
 
 	$status = valen_facility_status_overall($fid);
 
@@ -110,7 +136,7 @@ function vweb_process_facility($fid, $fdata)
 
 		?></dt>
 		<dd class="<?php echo $traffic_light_color ?>">
-			<span class="status-label <?php echo $traffic_light_color ?>"><?php echo $traffic_light_text ?></span>
+			<span class="status-label <?php echo $traffic_light_color ?>" title="<?php echo vweb_format_response_time($rtime) ?>"><?php echo $traffic_light_text ?></span>
 		</dd>
 	</dl>
 
