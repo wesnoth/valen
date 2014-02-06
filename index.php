@@ -230,7 +230,7 @@ if (function_exists('ob_gzhandler') && extension_loaded('zlib'))
 <head>
 	<meta charset="utf-8" />
 
-	<title>Site Status &bull; Battle for Wesnoth</title>
+	<title>Wesnoth.org Site Status</title>
 
 	<link rel="shortcut icon" href="./glamdrol/favicon.ico" type="image/x-icon" />
 
