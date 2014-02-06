@@ -77,7 +77,7 @@ function valen_load_json($file)
 
 	valen_make_synthetic_dns_facility();
 
-	if ($envelope['refresh_interval'])
+	if (isset($envelope['refresh_interval']))
 	{
 		$refresh_interval = $envelope['refresh_interval'];
 	}
@@ -150,7 +150,7 @@ function valen_facility_status_overall($facility_id)
 			$status = STATUS_DNS_IS_BAD;
 		}
 
-		$probe_result = $facility['status'];
+		$probe_result = @$facility['status'];
 
 		// Probes always return either STATUS_FAIL or STATUS_GOOD. This also
 		// applies to individual instances below.
@@ -159,7 +159,7 @@ function valen_facility_status_overall($facility_id)
 			$status = STATUS_FAIL;
 		}
 
-		$instances = $facility['instances'];
+		$instances = @$facility['instances'];
 
 		if (is_array($instances) && !empty($instances))
 		{

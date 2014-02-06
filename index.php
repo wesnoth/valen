@@ -61,19 +61,20 @@ function vweb_process_instance($idata)
  */
 function vweb_process_facility($fid, $fdata)
 {
-	if ($fdata['hidden'] !== null && $fdata['hidden'])
+	if (isset($fdata['hidden']) && $fdata['hidden'])
 	{
 		return;
 	}
 
 	echo '<li>';
 
-	$name = ($fdata['name'] !== null ? $fdata['name'] : $fid);
-	$hostname = $fdata['hostname'];
-	$desc = $fdata['desc'];
-	$links = $fdata['links'];
-	$broken_dns_hostnames = $fdata['broken_dns_hostnames'];
-	$instances = $fdata['instances'];
+	$name = (isset($fdata['name']) ? $fdata['name'] : $fid);
+
+	$hostname = @$fdata['hostname'];
+	$desc = @$fdata['desc'];
+	$links = @$fdata['links'];
+	$broken_dns_hostnames = @$fdata['broken_dns_hostnames'];
+	$instances = @$fdata['instances'];
 
 	$status = valen_facility_status_overall($fid);
 
