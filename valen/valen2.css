@@ -34,11 +34,8 @@
 	font-size: 0.78em;
 }
 
-.facilities, .facilities > li {
-	display: block;
-}
-
 .facilities {
+	display: block;
 	list-style: none;
 	list-style-image: none; /* IE 6 */
 	padding: 0;
