@@ -192,3 +192,9 @@
 	font-size: 0.75em;
 	padding-top: 2em;
 }
+
+#page-description {
+	border-bottom: solid 1px #bbb;
+	padding-bottom: 1em;
+	margin-bottom: 1em;
+}

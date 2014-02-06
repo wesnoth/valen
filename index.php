@@ -403,12 +403,6 @@ if ($report_available)
 			<li><a href="https://webchat.freenode.net/?channels=%23wesnoth">Using your browser</a></li>
 			<li><a href="irc://chat.freenode.net/%23wesnoth">Using a dedicated IRC client</a></li>
 		</ul>
-
-		<br />
-
-		<hr />
-
-		<br />
 	</div>
 
 	<div class="chronology">
