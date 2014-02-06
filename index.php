@@ -234,7 +234,7 @@ if (function_exists('ob_gzhandler') && extension_loaded('zlib'))
 
 	<link rel="shortcut icon" href="./glamdrol/favicon.ico" type="image/x-icon" />
 
-	<link rel="stylesheet" type="text/css" href="./glamdrol/main.css" />
+	<link rel="stylesheet" type="text/css" href="./glamdrol/mini.css" />
 	<link rel="stylesheet" type="text/css" href="./valen/valen2.css" />
 
 	<script type="text/javascript">
