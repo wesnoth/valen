@@ -120,6 +120,7 @@
 	background: #dcb;
 	border-radius: 2px;
 	padding: 0.2em 0.8em;
+	text-shadow: 0px 1px 0px #eee;
 
 	border-top-right-radius: 0 !important;
 	border-bottom-right-radius: 0 !important;
