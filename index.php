@@ -380,14 +380,14 @@ if ($report_available)
 
 	<h1 class="fl">Site Status</h1>
 
-	<div id="page-description-toggle" class="fr"><a href="#" onclick="toggle_page_description(); return false;">What is this?</a></div>
+	<div id="page-description-toggle" class="fr" style="display:none;"><a href="#" onclick="toggle_page_description(); return false;">What is this?</a></div>
 
 	<div class="fc"></div>
 
 	<div id="page-description">
 		<script type="text/javascript">
-			var help_div = document.getElementById('page-description');
-			if (help_div) help_div.style.display = 'none';
+			document.getElementById('page-description').style.display = 'none';
+			document.getElementById('page-description-toggle').style.display = '';
 		</script>
 
 		<p>The various services provided by Wesnoth.org are regularly monitored
