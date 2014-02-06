@@ -42,17 +42,21 @@ function vweb_process_instance($idata)
 	if ($status == STATUS_GOOD)
 	{
 		$traffic_light_color = 'green';
-		$traffic_light_text = 'Online';
+		$traffic_light_text = 'On';
 	}
 	else
 	{
 		$traffic_light_color = 'red';
-		$traffic_light_text = 'Offline';
+		$traffic_light_text = 'Off';
 	}
 
-	echo '<li class="' . $traffic_light_color . '">' .
+	echo '<li>' .
+		'<span class="instatus">' .
 		'<span class="inname">' . $iid . '</span>' .
-		'<span class="semaphore">' . $traffic_light_char . '</span>' .
+		'<span class="' . $traffic_light_color . '">' .
+			'<span class="status-label '. $traffic_light_color . '">' . $traffic_light_text . '</span>' .
+		'</span>' .
+		'</span>' .
 		'</li>';
 }
 
