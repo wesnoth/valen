@@ -308,14 +308,14 @@ if (function_exists('ob_gzhandler') && extension_loaded('zlib'))
 				return;
 
 			var mins = int(remaining / 60);
-			var secs = remaining % 60;
+			var secs = int(remaining % 60);
 
-			var text = 'Refreshing in ' + mins + ' minutes';
+			var text = 'Refreshing in ';
 
-			if (secs)
-			{
-				text += ' and ' + int(secs) + ' seconds';
-			}
+			if (mins)
+				text += mins + ' minute' + (mins != 1 ? 's' : '') + ' and ';
+
+			text += secs + ' seconds';
 
 			text += '\u2026';
 
