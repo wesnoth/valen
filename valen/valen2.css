@@ -95,11 +95,6 @@
 	visibility: visible;
 }
 
-.header .semaphore {
-	font-size: 2em;
-	margin-left: 0.2em;
-}
-
 .inreport {
 	font-weight: bold;
 	list-style: none;
@@ -107,10 +102,6 @@
 
 .inreport li {
 	display: inline;
-}
-
-.inreport .semaphore {
-	font-size: 2em;
 }
 
 .instatus {
@@ -137,21 +128,12 @@
 	border-bottom-left-radius: 0 !important;
 }
 
-.inreport li .semaphore {
-	float: left;
-	margin: 0 0.5em 0 0.25em;
-}
-
 .bold   { font-weight: bold;  }
 
 .red    { color: #b22;        }
 .green  { color: #090;        }
 .yellow { color: #d60;        }
 .gray   { color: #aaa;        }
-
-.red .semaphore    { text-shadow: 0px 0px 0.2em #f66; }
-.green .semaphore  { text-shadow: 0px 0px 0.2em #0f0; }
-.yellow .semaphore { text-shadow: 0px 0px 0.2em #fa0; }
 
 .dnsreport ul, .dnsreport li {
 	padding: 0;

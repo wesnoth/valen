@@ -25,15 +25,11 @@
 define('IN_VALEN', true);
 include('./common.php');
 
-$traffic_light_char = '&#8226;';
-
 /*
  * Print subreport for a single facility instance.
  */
 function vweb_process_instance($idata)
 {
-	global $traffic_light_char;
-
 	$iid = $idata['id'];
 	$status = $idata['status'];
 
@@ -65,8 +61,6 @@ function vweb_process_instance($idata)
  */
 function vweb_process_facility($fid, $fdata)
 {
-	global $traffic_light_char;
-
 	if ($fdata['hidden'] !== null && $fdata['hidden'])
 	{
 		return;
