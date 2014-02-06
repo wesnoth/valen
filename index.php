@@ -382,7 +382,7 @@ if ($report_available)
 
 	<div id="page-description-toggle" class="fr"><a href="#" onclick="toggle_page_description(); return false;">What is this?</a></div>
 
-	<div class="visualClear"></div>
+	<div class="fc"></div>
 
 	<div id="page-description" style="display:none;">
 		<p>The various services provided by Wesnoth.org are regularly monitored
@@ -411,7 +411,7 @@ if ($report_available)
 		<span id="refresh_interval" class="refreshing fr" style="display:none;">&nbsp;</span>
 	</div>
 
-	<div class="visualClear"></div>
+	<div class="fc"></div>
 
 	<ul class="facilities"><?php
 
@@ -434,7 +434,7 @@ else
 		<span id="refresh_interval" class="refreshing fr" style="display:none;">&nbsp;</span>
 	</div>
 
-	<div class="visualClear"></div>
+	<div class="fc"></div>
 
 	<div class="status-report-unavailable">
 		<p>The Wesnoth.org Site Status service is currently unavailable. Please try again at a later time.</p>
@@ -445,7 +445,7 @@ else
 
 ?>
 
-<div class="visualClear"></div>
+<div class="fc"></div>
 
 </div> <!-- end content -->
 
