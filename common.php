@@ -194,5 +194,3 @@ function valen_facility_status_overall($facility_id)
 }
 
 valen_load_json(VALEN_REPORT_FILE);
-
-?>
