@@ -564,7 +564,7 @@ sub check_wesnothd($$)
 
 ##
 # Resolves the given hostname and returns the first address found, or undef
-# if it coudl not be resolved.
+# if it could not be resolved.
 ##
 sub resolve_hostname_first($)
 {
