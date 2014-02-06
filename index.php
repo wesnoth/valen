@@ -384,7 +384,12 @@ if ($report_available)
 
 	<div class="fc"></div>
 
-	<div id="page-description" style="display:none;">
+	<div id="page-description">
+		<script type="text/javascript">
+			var help_div = document.getElementById('page-description');
+			if (help_div) help_div.style.display = 'none';
+		</script>
+
 		<p>The various services provided by Wesnoth.org are regularly monitored
 		for possible unexpected downtimes. If you find a problem accessing our
 		site or servers, you can come here to check whether the problem is only
