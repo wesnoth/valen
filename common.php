@@ -43,6 +43,14 @@ $report_ts = null;
 $refresh_interval = 900;
 
 /*
+ * Encode special HTML characters in $str as entities.
+ */
+function encode_html($str, $encode_quotes = true)
+{
+	return htmlspecialchars($str, ($encode_quotes ? ENT_COMPAT : ENT_NOQUOTES), 'UTF-8');
+}
+
+/*
  * Loads the valen JSON report file $file.
  */
 function valen_load_json($file)

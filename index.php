@@ -45,7 +45,7 @@ function vweb_format_response_time($rtime)
 		$rtime_display_text .= 'N/A';
 	}
 
-	return htmlentities($rtime_display_text);
+	return encode_html($rtime_display_text);
 }
 
 /*
@@ -126,7 +126,7 @@ function vweb_process_facility($fid, $fdata)
 	<dl class="header">
 		<dt><?php
 
-		echo htmlentities($name);
+		echo encode_html($name, false);
 
 		if ($hostname !== null)
 		{
@@ -144,7 +144,7 @@ function vweb_process_facility($fid, $fdata)
 
 	if ($desc !== null)
 	{
-		echo '<span class="description">' . htmlentities($desc) . '</span>';
+		echo '<span class="description">' . encode_html($desc, false) . '</span>';
 	}
 
 	if (is_array($links) && !empty($links))
@@ -162,7 +162,7 @@ function vweb_process_facility($fid, $fdata)
 				$is_first_link = false;
 			}
 
-			echo '<a href="' . htmlentities($l['url']) . '">' . htmlentities($l['title']) .'</a>';
+			echo '<a href="' . encode_html($l['url']) . '">' . encode_html($l['title'], false) .'</a>';
 		}
 	}
 
@@ -175,7 +175,7 @@ function vweb_process_facility($fid, $fdata)
 			<ul><?php
 			foreach($broken_dns_hostnames as $hostname)
 			{
-				echo '<li>' . htmlentities($hostname) . '</li>';
+				echo '<li>' . encode_html($hostname, false) . '</li>';
 			}
 			?></ul>
 		</div><?php
