@@ -63,12 +63,12 @@ function vweb_process_instance($idata)
 	if ($status == STATUS_GOOD)
 	{
 		$traffic_light_color = 'green';
-		$traffic_light_text = 'On';
+		$traffic_light_text = 'Up';
 	}
 	else
 	{
 		$traffic_light_color = 'red';
-		$traffic_light_text = 'Off';
+		$traffic_light_text = 'Down';
 	}
 
 	echo '<li>' .
