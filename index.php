@@ -162,7 +162,7 @@ function vweb_process_facility($fid, $fdata)
 				$is_first_link = false;
 			}
 
-			echo '<a href="' . encode_html($l['url']) . '">' . encode_html($l['title'], false) .'</a>';
+			echo '<a href="' . encode_html($l['url']) . '" rel="nofollow">' . encode_html($l['title'], false) .'</a>';
 		}
 	}
 
