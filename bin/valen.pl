@@ -69,21 +69,20 @@ use constant {
 };
 
 my @campaignd_standard_ports = (
+	{ 'Testing'				=> 15004 },
 	{ '1.10'				=> 15002 },
 	{ '1.11'				=> 15006 },
 	{ '1.8'					=> 15001 },
-	{ 'Testing'				=> 15004 },
 );
 
 my @wesnothd_standard_ports = (
+	{ 'Master'				=> 15000 },
 	{ '1.10'				=> 14999 },
 	{ '1.11'				=> 14997 },
 	{ '1.8'					=> 14998 },
-	{ 'Master'				=> 15000 },
 );
 
-my @wesnothd_ports_all = @wesnothd_standard_ports;
-splice @wesnothd_ports_all, -1, 0, { '1.6' => 14995 };
+my @wesnothd_ports_all = (@wesnothd_standard_ports, { '1.6' => 14995 });
 
 my @facilities = (
 	'wesnoth.org', {
