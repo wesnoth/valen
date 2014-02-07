@@ -395,13 +395,20 @@ if ($report_available)
 		site or servers, you can come here to check whether the problem is only
 		at your end or affects everyone.</p>
 
-		<p>For reporting issues and requesting help, please visit our IRC
+		<p>For reporting issues or requesting help, please visit our IRC
 		channel <strong>#wesnoth</strong> on the
 		<a href="https://freenode.net/">freenode IRC network</a>:</p>
 
 		<ul>
 			<li><a href="https://webchat.freenode.net/?channels=%23wesnoth">Using your browser</a></li>
 			<li><a href="irc://chat.freenode.net/%23wesnoth">Using a dedicated IRC client</a></li>
+		</ul>
+
+		<p>You may also use our forums:</p>
+
+		<ul>
+			<li><a href="http://forums.wesnoth.org/viewforum.php?f=4">Technical Support</a> — For assistance with the add-ons and multiplayer client functionality of the game</li>
+			<li><a href="http://forums.wesnoth.org/viewforum.php?f=17">Website</a> — For reporting problems or suggesting ideas for the Wesnoth.org website in general</li>
 		</ul>
 	</div>
 
