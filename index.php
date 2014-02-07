@@ -303,7 +303,7 @@ if (function_exists('ob_gzhandler') && extension_loaded('zlib'))
 
 		function update_refresh_timer_display(remaining)
 		{
-			var e = document.getElementById('refresh_interval');
+			var e = document.getElementById('refresh-interval');
 			if (!e)
 				return;
 
@@ -324,7 +324,7 @@ if (function_exists('ob_gzhandler') && extension_loaded('zlib'))
 
 		function update_report_timer()
 		{
-			var e = document.getElementById('report_ts');
+			var e = document.getElementById('report-ts');
 			if (!e)
 				return;
 
@@ -413,8 +413,8 @@ if ($report_available)
 	</div>
 
 	<div class="chronology">
-		<span id="report_ts" class="updated fl">Updated on <?php echo date("Y-m-d H:i T") ?></span>
-		<span id="refresh_interval" class="refreshing fr" style="display:none;">&nbsp;</span>
+		<span id="report-ts" class="updated fl">Updated on <?php echo date("Y-m-d H:i T") ?></span>
+		<span id="refresh-interval" class="refreshing fr" style="display:none;">&nbsp;</span>
 	</div>
 
 	<div class="fc"></div>
@@ -437,7 +437,7 @@ else
 	<h1>Site Status</h1>
 
 	<div class="chronology">
-		<span id="refresh_interval" class="refreshing fr" style="display:none;">&nbsp;</span>
+		<span id="refresh-interval" class="refreshing fr" style="display:none;">&nbsp;</span>
 	</div>
 
 	<div class="fc"></div>
@@ -475,7 +475,7 @@ else
 
 	if (refresh_interval)
 	{
-		var e = document.getElementById('refresh_interval');
+		var e = document.getElementById('refresh-interval');
 		if (e)
 			e.style.display = '';
 
