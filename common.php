@@ -27,7 +27,7 @@ if(!defined('IN_VALEN')) {
 }
 
 /* NOTE: this must be set to the path used for valen.pl's reports. */
-define('VALEN_REPORT_FILE', '/var/lib/valen/report3.json');
+define('VALEN_REPORT_FILE', '/var/lib/valen/report.json');
 
 define('STATUS_UNKNOWN',		-1);
 define('STATUS_FAIL',			 0);
