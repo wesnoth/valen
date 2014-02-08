@@ -354,14 +354,7 @@ if (function_exists('ob_gzhandler') && extension_loaded('zlib'))
 
 <div id="nav">
 	<ul>
-		<li><a href="http://www.wesnoth.org/">Home</a></li>
-		<li><a href="http://wiki.wesnoth.org/Play">Play</a></li>
-		<li><a href="http://wiki.wesnoth.org/Create">Create</a></li>
-		<li><a href="http://forums.wesnoth.org/">Forums</a></li>
-		<li><a href="http://wiki.wesnoth.org/Support">Support</a></li>
-		<li><a href="http://wiki.wesnoth.org/Project">Project</a></li>
-		<li><a href="http://wiki.wesnoth.org/Credits">Credits</a></li>
-		<li><a href="http://wiki.wesnoth.org/UsefulLinks">Links</a></li>
+		<li><a href="http://status.wesnoth.org/">Site Status</a></li>
 	</ul>
 </div>
 
