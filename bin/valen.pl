@@ -661,7 +661,10 @@ for(my $k = 0; $k < @facilities; ++$k)
 		$st->{dns} = STATUS_FAIL;
 	}
 
-	drep($host, "DNS", $st->{dns} . " (expected " . $def->{ip} . ", got " . ($ip or 'NXDOMAIN') .")");
+	drep($host, 'DNS', ($st->{dns} == STATUS_GOOD
+		? 'OK (' . $def->{ip} . ')'
+		: 'FAIL (expected ' . $def->{ip} . ', got ' . ($ip or 'NXDOMAIN') . ')'
+	));
 
 	#
 	# FACILITY PROBING.
