@@ -308,7 +308,7 @@ if (function_exists('ob_gzhandler') && extension_loaded('zlib'))
 				return;
 
 			var mins = int(remaining / 60);
-			var secs = int(remaining % 60);
+			var secs = Math.max(int(remaining % 60), 0);
 
 			var text = 'Refreshing in ';
 
