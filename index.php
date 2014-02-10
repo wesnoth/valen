@@ -271,10 +271,8 @@ if (function_exists('ob_gzhandler') && extension_loaded('zlib'))
 			return intval + ' ' + unit + (intval > 1 ? 's' : '');
 		}
 
-		function timestamp_diff_display(ts)
+		function timestamp_diff_display(delta)
 		{
-			var delta = (new Date()).getTime()/1000 - ts;
-
 			var secs = delta % 60;
 			delta = /*int*/((delta - secs) / 60);
 
@@ -328,8 +326,15 @@ if (function_exists('ob_gzhandler') && extension_loaded('zlib'))
 			if (!e)
 				return;
 
-			e.firstChild.nodeValue =
-				'Updated ' + timestamp_diff_display(report_ts) + ' ago';
+			var age = int((new Date()).getTime()/1000 - report_ts);
+
+			if (age < 60)
+				e.firstChild.nodeValue = 'Updated less than a minute ago';
+			else if (age >= 60 && age < 120)
+				e.firstChild.nodeValue = 'Updated a minute ago';
+			else
+				e.firstChild.nodeValue = 'Updated ' +
+					timestamp_diff_display(age) + ' ago';
 		}
 
 		function toggle_page_description()
