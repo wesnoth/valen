@@ -44,6 +44,8 @@ my $VERSION = '0.0.2';
 
 my $debug = 0;
 
+my $pretty_json = 0;
+
 ################################################################################
 #                                CONFIGURATION                                 #
 ################################################################################
@@ -443,7 +445,7 @@ sub write_object_to_file($$)
 		refresh_interval	=> $config{refresh_interval},
 	};
 
-	print $out to_json($envelope, { utf8 => 1, pretty => 1 });
+	print $out to_json($envelope, { utf8 => 1, pretty => $pretty_json });
 
 	close $out;
 
@@ -600,7 +602,8 @@ sub hvalue($$$)
 
 GetOptions(
 	'debug+'			=> \$debug,
-) or die "Usage: $0 [-d | --debug] report_file_path [refresh_interval]\n";
+	'pretty-json'		=> \$pretty_json,
+) or die "Usage: $0 [-d | --debug] [--pretty-json] report_file_path [refresh_interval]\n";
 
 $config{output_path} = shift(@ARGV) if @ARGV;
 $config{refresh_interval} = shift(@ARGV) if @ARGV;
