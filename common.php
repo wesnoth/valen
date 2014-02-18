@@ -28,6 +28,8 @@ if(!defined('IN_VALEN')) {
 
 /* NOTE: this must be set to the path used for valen.pl's reports. */
 define('VALEN_REPORT_FILE', '/var/lib/valen/report.json');
+/* Site notice text used to display downtime announcements. */
+define('VALEN_NOTICE_FILE', '/var/lib/valen/notice.txt');
 
 define('STATUS_UNKNOWN',		-1);
 define('STATUS_FAIL',			 0);
@@ -41,6 +43,8 @@ $report = array();
 $report_ts = null;
 // Valen front-end refresh interval. Must be a valid non-zero integer.
 $refresh_interval = 900;
+// Site notice.
+$site_notice = null;
 
 /*
  * Encode special HTML characters in $str as entities.
@@ -91,6 +95,30 @@ function valen_load_json($file)
 	}
 
 	$report_ts = $envelope['ts'];
+}
+
+/*
+ * Loads the site notice text file $file.
+ */
+function valen_load_notice_text($file)
+{
+	global $site_notice;
+
+	$text = @file_get_contents($file);
+
+	if ($text === false)
+	{
+		return;
+	}
+
+	$text = trim($text);
+
+	if (empty($text))
+	{
+		return;
+	}
+
+	$site_notice = $text;
 }
 
 function valen_make_synthetic_dns_facility()
@@ -202,3 +230,4 @@ function valen_facility_status_overall($facility_id)
 }
 
 valen_load_json(VALEN_REPORT_FILE);
+valen_load_notice_text(VALEN_NOTICE_FILE);

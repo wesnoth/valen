@@ -155,6 +155,18 @@
 	text-align: center;
 }
 
+.status-site-notice {
+	background: #dcb;
+	padding: 1em 4em;
+	border-radius: 2px;
+	text-align: center;
+}
+
+.notice-header {
+	font-size: 120%;
+	font-weight: bold;
+}
+
 .status-label {
 	display: inline-block;
 	color: #fff;

@@ -376,6 +376,14 @@ if ($report_available)
 {
 	?>
 
+	<?php if (!empty($site_notice)): ?>
+
+	<div class="status-site-notice">
+		<div class="notice-header">Status Notice</div>
+		<div><?php echo $site_notice ?></div>
+	</div>
+	<?php endif ?>
+
 	<h1 class="fl">Site Status</h1>
 
 	<div id="page-description-toggle" class="fr" style="display:none;"><a href="#" onclick="toggle_page_description(); return false;">What is this?</a></div>
