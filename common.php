@@ -29,7 +29,7 @@ if(!defined('IN_VALEN')) {
 /* NOTE: this must be set to the path used for valen.pl's reports. */
 define('VALEN_REPORT_FILE', '/var/lib/valen/report.json');
 /* Site notice text used to display downtime announcements. */
-define('VALEN_NOTICE_FILE', '/var/lib/valen/notice.txt');
+define('VALEN_NOTICE_FILE', '/var/lib/valen/notice.html');
 
 define('STATUS_UNKNOWN',		-1);
 define('STATUS_FAIL',			 0);
