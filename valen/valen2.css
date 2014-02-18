@@ -150,7 +150,7 @@
 .status-report-unavailable {
 	background: #b22;
 	color: #fff;
-	padding: 1em;
+	padding: 1em 4em;
 	border-radius: 2px;
 	text-align: center;
 }
