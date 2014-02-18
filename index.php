@@ -37,7 +37,7 @@ function vweb_format_response_time($rtime)
 		}
 		else
 		{
-			$rtime_display_text .= round($rtime, 1) . ' ms';
+			$rtime_display_text .= round($rtime, 0) . ' ms';
 		}
 	}
 	else
