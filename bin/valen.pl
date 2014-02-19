@@ -164,6 +164,12 @@ my @facilities = (
 		probe				=> PROBE_NONE,
 		hidden				=> 1,
 	},
+	'asheviere.wesnoth.org', {
+		ip					=> IP_ASHEVIERE,
+		name				=> "Old Server",
+		desc				=> "Previous server used to host most services",
+		probe				=> PROBE_HTTP,
+	},
 );
 
 ################################################################################
