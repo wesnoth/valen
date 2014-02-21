@@ -72,6 +72,7 @@ use constant {
 
 my @campaignd_standard_ports = (
 	{ 'Testing'				=> 15004 },
+	{ '1.12'				=> 15007 },
 	{ '1.10'				=> 15002 },
 	{ '1.11'				=> 15006 },
 	{ '1.8'					=> 15001 },
