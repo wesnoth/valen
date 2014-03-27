@@ -56,7 +56,6 @@ my %config = (
 );
 
 use constant {
-	IP_ASHEVIERE			=> '65.18.193.12',		# asheviere.wesnoth.org
 	IP_BALDRAS				=> '144.76.5.6',		# baldras.wesnoth.org
 	IP_GONZO				=> '193.7.178.1',		# server2.wesnoth.org [gonzo.dicp.de]
 	IP_BASILIC				=> '212.85.158.134',	# server3.wesnoth.org [basilic.tuxfamily.org]
@@ -164,12 +163,6 @@ my @facilities = (
 		desc				=> "External status monitoring facility",
 		probe				=> PROBE_NONE,
 		hidden				=> 1,
-	},
-	'asheviere.wesnoth.org', {
-		ip					=> IP_ASHEVIERE,
-		name				=> "Old Server",
-		desc				=> "Previous server used to host most services",
-		probe				=> PROBE_HTTP,
 	},
 );
 
