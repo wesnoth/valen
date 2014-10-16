@@ -84,7 +84,7 @@ my @wesnothd_standard_ports = (
 	{ '1.8'					=> 14998 },
 );
 
-my @wesnothd_ports_all = (@wesnothd_standard_ports, { '1.6' => 14995 });
+my @wesnothd_ports_all = (@wesnothd_standard_ports);
 
 my @facilities = (
 	'wesnoth.org', {
