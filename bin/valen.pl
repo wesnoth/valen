@@ -80,7 +80,7 @@ my @campaignd_standard_ports = (
 my @wesnothd_standard_ports = (
 	{ 'Master'				=> 15000 },
 	{ '1.12'				=> 14998 },
-	{ '1.11'				=> 14997 },
+	{ '1.13'				=> 14997 },
 	{ '1.10'				=> 14999 },
 );
 
