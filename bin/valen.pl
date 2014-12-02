@@ -59,7 +59,7 @@ use constant {
 	IP_BALDRAS				=> '144.76.5.6',		# baldras.wesnoth.org
 	IP_GONZO				=> '193.7.178.1',		# server2.wesnoth.org [gonzo.dicp.de]
 	IP_BASILIC				=> '212.85.158.134',	# server3.wesnoth.org [basilic.tuxfamily.org]
-	IP_AI0867				=> '109.237.218.218',	# status.wesnoth.org [ai0867.net]
+	IP_AI0867				=> '109.237.213.40',	# status.wesnoth.org [ai0867.net]
 };
 
 use constant {
