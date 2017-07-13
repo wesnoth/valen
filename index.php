@@ -359,7 +359,7 @@ if (function_exists('ob_gzhandler') && extension_loaded('zlib'))
 <div class="centerbox">
 
 	<div id="logo">
-		<a href="http://www.wesnoth.org/"><img alt="Wesnoth logo" src="wesmere/logo-minimal-64.png" width="64" height="64" data-retina /></a>
+		<a href="https://www.wesnoth.org/"><img alt="Wesnoth logo" src="wesmere/logo-minimal-64.png" width="64" height="64" data-retina /></a>
 	</div>
 
 	<ul id="navlinks">
@@ -424,8 +424,8 @@ if ($report_available)
 		<p>You may also use our forums:</p>
 
 		<ul>
-			<li><a href="http://forums.wesnoth.org/viewforum.php?f=4">Technical Support</a> — For assistance with the add-ons and multiplayer client functionality of the game</li>
-			<li><a href="http://forums.wesnoth.org/viewforum.php?f=17">Website</a> — For reporting problems or suggesting ideas for the Wesnoth.org website in general</li>
+			<li><a href="https://forums.wesnoth.org/viewforum.php?f=4">Technical Support</a> — For assistance with the add-ons and multiplayer client functionality of the game</li>
+			<li><a href="https://forums.wesnoth.org/viewforum.php?f=17">Website</a> — For reporting problems or suggesting ideas for the Wesnoth.org website in general</li>
 		</ul>
 	</div>
 
@@ -477,7 +477,7 @@ else
 <div id="footer-sep"></div>
 
 <div id="footer"><div id="footer-content"><div>
-	<a href="http://wiki.wesnoth.org/StartingPoints">Site Map</a> &#8226; <a href="http://status.wesnoth.org/">Site Status</a><br />
+	<a href="https://wiki.wesnoth.org/StartingPoints">Site Map</a> &#8226; <a href="http://status.wesnoth.org/">Site Status</a><br />
 	Copyright &copy; 2003&ndash;2017 by <a rel="author" href="https://wiki.wesnoth.org/Project">The Battle for Wesnoth Project</a>. Supported by <a href="http://www.jexiste.fr/">Jexiste</a>.<br />
 	Site design Copyright &copy; 2017 by Ignacio R. Morelle.
 </div></div></div>
