@@ -3,7 +3,7 @@
  * codename "Valen": a Wesnoth facilities status page
  * index.php: Web front-end
  *
- * Copyright (C) 2012 - 2015 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>
+ * Copyright (C) 2012 - 2017 by Ignacio R. Morelle <shadowm2006@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -229,13 +229,17 @@ if (function_exists('ob_gzhandler') && extension_loaded('zlib'))
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montaga%7COpen+Sans:400,400i,700,700i" type="text/css" />
+	<link rel="icon" type="image/png" href="wesmere/favicon-32.png" sizes="32x32" />
+	<link rel="icon" type="image/png" href="wesmere/favicon-16.png" sizes="16x16" />
+	<link rel="stylesheet" type="text/css" href="wesmere/mini.css" />
+	<link rel="stylesheet" type="text/css" href="valen/valen2.css" />
 
 	<title>Wesnoth.org Site Status</title>
 
-	<link rel="shortcut icon" href="./glamdrol/favicon.ico" type="image/x-icon" />
-
-	<link rel="stylesheet" type="text/css" href="./glamdrol/mini.css" />
-	<link rel="stylesheet" type="text/css" href="./valen/valen2.css" />
+	<script src="wesmere/modernizr.js"></script>
 
 	<script type="text/javascript">
 	// <![CDATA[
@@ -349,23 +353,30 @@ if (function_exists('ob_gzhandler') && extension_loaded('zlib'))
 
 <body>
 
-<div id="global">
-
-<div id="header">
-	<div id="logo">
-		<a href="http://www.wesnoth.org/"><img alt="Wesnoth logo" src="./glamdrol/wesnoth-logo.jpg" /></a>
-	</div>
-</div>
-
-<div id="nav">
-	<ul>
-		<li><a href="http://status.wesnoth.org/">Site Status</a></li>
-	</ul>
-</div>
-
 <div id="main">
 
-<div id="content">
+<div id="nav" role="banner">
+<div class="centerbox">
+
+	<div id="logo">
+		<a href="http://www.wesnoth.org/"><img alt="Wesnoth logo" src="wesmere/logo-minimal-64.png" width="64" height="64" data-retina /></a>
+	</div>
+
+	<ul id="navlinks">
+		<li><a href="http://status.wesnoth.org/">Status</a></li>
+		<li><a href="/">Home</a></li>
+		<li><a href="https://forums.wesnoth.org/viewforum.php?f=62">News</a></li>
+		<li><a href="https://wiki.wesnoth.org/Play">Play</a></li>
+		<li><a href="https://wiki.wesnoth.org/Create">Create</a></li>
+		<li><a href="https://forums.wesnoth.org/">Forums</a></li>
+		<li><a href="https://wiki.wesnoth.org/Project">About</a></li>
+	</ul>
+
+	<div class="reset"></div>
+</div>
+</div>
+
+<div id="content" role="main">
 
 <?php
 
@@ -461,16 +472,17 @@ else
 
 </div> <!-- end content -->
 
-<div id="footer">
-	<div id="note">
-		<p>Copyright &copy; 2003&ndash;2015 The Battle for Wesnoth</p>
-		<p>Supported by <a href="http://www.jexiste.fr/">Jexiste</a>.</p>
-	</div>
-</div>
-
 </div> <!-- end main -->
 
-</div> <!-- end global -->
+<div id="footer-sep"></div>
+
+<div id="footer"><div id="footer-content"><div>
+	<a href="http://wiki.wesnoth.org/StartingPoints">Site Map</a> &#8226; <a href="http://status.wesnoth.org/">Site Status</a><br />
+	Copyright &copy; 2003&ndash;2017 by <a rel="author" href="https://wiki.wesnoth.org/Project">The Battle for Wesnoth Project</a>. Supported by <a href="http://www.jexiste.fr/">Jexiste</a>.<br />
+	Site design Copyright &copy; 2017 by Ignacio R. Morelle.
+</div></div></div>
+
+<script src="wesmere/retina.min.js"></script>
 
 <script type="text/javascript">
 // <![CDATA[
