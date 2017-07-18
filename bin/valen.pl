@@ -65,6 +65,7 @@ use constant {
 use constant {
 	PROBE_NONE				=>  0,
 	PROBE_HTTP				=>  1,
+	PROBE_HTTPS				=>  2,
 	PROBE_GZC_CAMPAIGND		=> 10,
 	PROBE_GZC_WESNOTHD		=> 11,
 };
@@ -97,28 +98,28 @@ my @facilities = (
 		ip					=> IP_BALDRAS,
 		name				=> "Web Server",
 		desc				=> "HTTP server and front page",
-		probe				=> PROBE_HTTP,
+		probe				=> PROBE_HTTPS,
 		links				=> [
-			{ title => 'Front Page', url => 'http://www.wesnoth.org/' },
+			{ title => 'Front Page', url => 'https://www.wesnoth.org/' },
 		],
 	},
 	'forums.wesnoth.org', {
 		ip					=> IP_BALDRAS,
 		name				=> "Forums Board",
 		desc				=> "phpBB application",
-		probe				=> PROBE_HTTP,
+		probe				=> PROBE_HTTPS,
 		links				=> [
-			{ title => 'Board Index', url => 'http://forums.wesnoth.org/' },
+			{ title => 'Board Index', url => 'https://forums.wesnoth.org/' },
 		],
 	},
 	'wiki.wesnoth.org', {
 		ip					=> IP_BALDRAS,
 		name				=> "Wiki",
 		desc				=> "MediaWiki application",
-		probe				=> PROBE_HTTP,
+		probe				=> PROBE_HTTPS,
 		links				=> [
-			{ title => 'Starting Points', url => 'http://wiki.wesnoth.org/' },
-			{ title => 'Statistics',      url => 'http://wiki.wesnoth.org/Special:Statistics' },
+			{ title => 'Starting Points', url => 'https://wiki.wesnoth.org/' },
+			{ title => 'Statistics',      url => 'https://wiki.wesnoth.org/Special:Statistics' },
 		],
 	},
 	'add-ons.wesnoth.org', {
@@ -139,7 +140,7 @@ my @facilities = (
 		instances			=> [ @wesnothd_ports_all ],
 		links				=> [
 			{ title => 'Server Statistics', url => 'http://wesnothd.wesnoth.org/' },
-			{ title => 'Replays Directory', url => 'http://replays.wesnoth.org/' },
+			{ title => 'Replays Directory', url => 'https://replays.wesnoth.org/' },
 		],
 	},
 	'server2.wesnoth.org', {
@@ -709,6 +710,9 @@ for(my $k = 0; $k < @facilities; ++$k)
 
 				if($def->{probe} == PROBE_HTTP) {
 					$instatus = check_url('http://' . $inhost . '/', $inhttphost);
+				}
+				elsif($def->{probe} == PROBE_HTTPS) {
+					$instatus = check_url('https://' . $inhost . '/', $inhttphost);
 				}
 				elsif($def->{probe} == PROBE_GZC_WESNOTHD) {
 					$instatus = check_wesnothd($inhost, $inport);
