@@ -364,7 +364,7 @@ if (function_exists('ob_gzhandler') && extension_loaded('zlib'))
 
 	<ul id="navlinks">
 		<li><a href="http://status.wesnoth.org/">Status</a></li>
-		<li><a href="/">Home</a></li>
+		<li><a href="https://www.wesnoth.org/">Home</a></li>
 		<li><a href="https://forums.wesnoth.org/viewforum.php?f=62">News</a></li>
 		<li><a href="https://wiki.wesnoth.org/Play">Play</a></li>
 		<li><a href="https://wiki.wesnoth.org/Create">Create</a></li>
