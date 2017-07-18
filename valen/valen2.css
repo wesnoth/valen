@@ -44,8 +44,8 @@
 .facilities > li {
 	display: block;
 	clear: both;
-	padding: 0.6em 0.9em;
-	margin: 0.6em -0.9em;
+	padding: 0.6em 0.6em;
+	margin: 0.6em -0.6em;
 	border-radius: 6px;
 
 	-webkit-transition: background 120ms ease;
@@ -101,10 +101,11 @@
 .inreport {
 	font-weight: bold;
 	list-style: none;
+	margin-right: 6em;
 }
 
 .inreport ul {
-	margin: 0.4em 0 0;
+	margin: 0;
 	padding: 0;
 	text-align: left;
 }
@@ -116,7 +117,7 @@
 .instatus {
 	display: inline-block;
 	text-align: center;
-	margin: 0 1.5em 0 0;
+	margin: 0.4em 1.7em 0.4em 0;
 }
 
 .instatus span {
@@ -124,7 +125,7 @@
 	min-width: 2em;
 }
 
-.inname {
+span.inname {
 	background: #e7d9c0; /* $glamdrol-darkbg */
 	border-radius: 2px;
 	padding: 0.2em 0.9em;
@@ -210,4 +211,12 @@
 
 #page-description {
 	margin-bottom: 1em;
+}
+
+@media only screen and (max-width: 699px) {
+	#report-ts,
+	#refresh-interval {
+		float: none;
+		display: block;
+	}
 }
