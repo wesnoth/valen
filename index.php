@@ -359,7 +359,7 @@ if (function_exists('ob_gzhandler') && extension_loaded('zlib'))
 <div class="centerbox">
 
 	<div id="logo">
-		<a href="https://www.wesnoth.org/"><img alt="Wesnoth logo" src="wesmere/logo-minimal-64.png" width="64" height="64" data-retina /></a>
+		<a href="https://www.wesnoth.org/" aria-label="Wesnoth logo"></a>
 	</div>
 
 	<ul id="navlinks">
@@ -481,8 +481,6 @@ else
 	Copyright &copy; 2003&ndash;2017 by <a rel="author" href="https://wiki.wesnoth.org/Project">The Battle for Wesnoth Project</a>. Supported by <a href="http://www.jexiste.fr/">Jexiste</a>.<br />
 	Site design Copyright &copy; 2017 by Ignacio R. Morelle.
 </div></div></div>
-
-<script src="wesmere/retina.min.js"></script>
 
 <script type="text/javascript">
 // <![CDATA[
