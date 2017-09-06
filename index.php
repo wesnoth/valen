@@ -363,7 +363,7 @@ if (function_exists('ob_gzhandler') && extension_loaded('zlib'))
 	</div>
 
 	<ul id="navlinks">
-		<li><a href="http://status.wesnoth.org/">Status</a></li>
+		<li><a href="https://status.wesnoth.org/">Status</a></li>
 		<li><a href="https://www.wesnoth.org/">Home</a></li>
 		<li><a href="https://forums.wesnoth.org/viewforum.php?f=62">News</a></li>
 		<li><a href="https://wiki.wesnoth.org/Play">Play</a></li>
@@ -477,7 +477,7 @@ else
 <div id="footer-sep"></div>
 
 <div id="footer"><div id="footer-content"><div>
-	<a href="https://wiki.wesnoth.org/StartingPoints">Site Map</a> &#8226; <a href="http://status.wesnoth.org/">Site Status</a><br />
+	<a href="https://wiki.wesnoth.org/StartingPoints">Site Map</a> &#8226; <a href="https://status.wesnoth.org/">Site Status</a><br />
 	Copyright &copy; 2003&ndash;2017 by <a rel="author" href="https://wiki.wesnoth.org/Project">The Battle for Wesnoth Project</a>. Supported by <a href="http://www.jexiste.fr/">Jexiste</a>.<br />
 	Site design Copyright &copy; 2017 by Ignacio R. Morelle.
 </div></div></div>
