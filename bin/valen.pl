@@ -84,6 +84,10 @@ my @wesnothd_standard_ports = (
 	{ '1.10'				=> 14999 },
 );
 
+my @wesnothd_basilic_ports = (
+	{ '1.12'				=> 14998 },
+);
+
 my @wesnothd_ports_all = (@wesnothd_standard_ports);
 
 my @facilities = (
@@ -155,7 +159,7 @@ my @facilities = (
 		name				=> "Alternate MP Server 3",
 		desc				=> "Official alternate multiplayer games server #3 (wesnothd)",
 		probe				=> PROBE_GZC_WESNOTHD,
-		instances			=> [ @wesnothd_standard_ports ],
+		instances			=> [ @wesnothd_basilic_ports ],
 	},
 	'status.wesnoth.org', {
 		ip					=> IP_AI0867,
