@@ -515,7 +515,7 @@ sub check_campaignd($$)
 		return STATUS_FAIL;
 	}
 
-	if($wml !~ m|^\[message]\n\s*message=\".*\"\n\[/message\]\n|) {
+	if($wml !~ m|^\[message]\n\s*message=\".*\"\n\[/message\]\n$|s) {
 		dwarn "campaignd ($addr:$port): server response is not a proper [message]\n";
 		dwarn "--cut here--\n" . $wml . "--cut here--\n";
 		return STATUS_FAIL;
