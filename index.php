@@ -412,21 +412,16 @@ if ($report_available)
 		site or servers, you can come here to check whether the problem is only
 		at your end or affects everyone.</p>
 
-		<p>For reporting issues or requesting help, please visit our IRC
-		channel <strong>#wesnoth</strong> on the
-		<a href="https://freenode.net/">freenode IRC network</a>:</p>
+		<p>For reporting issues or requesting help, you can use our <a href="https://discord.gg/battleforwesnoth"><b>official Discord server</b></a>, or our official <abbr title="Internet Relay Chat">IRC</abbr> channel <a href="https://webchat.freenode.net/?channels=wesnoth"><b>#wesnoth</b></a> on <code class="noframe">irc.freenode.net</code>.</p>
 
-		<ul>
-			<li><a href="https://webchat.freenode.net/?channels=%23wesnoth">Using your browser</a></li>
-			<li><a href="irc://chat.freenode.net/%23wesnoth">Using a dedicated IRC client</a></li>
-		</ul>
-
-		<p>You may also use our forums:</p>
+		<p>Alternatively, you may use our forums:</p>
 
 		<ul>
 			<li><a href="https://forums.wesnoth.org/viewforum.php?f=4">Technical Support</a> — For assistance with the add-ons and multiplayer client functionality of the game</li>
 			<li><a href="https://forums.wesnoth.org/viewforum.php?f=17">Website</a> — For reporting problems or suggesting ideas for the Wesnoth.org website in general</li>
 		</ul>
+
+		<p>You may also follow <a href="https://twitter.com/Wesnoth"><b>@Wesnoth</b></a> on Twitter for status updates!</p>
 	</div>
 
 	<div class="chronology">
