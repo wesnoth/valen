@@ -3,7 +3,7 @@
 # codename "Valen": a Wesnoth facilities status page
 # valen.pl: Web status poll script
 #
-# Copyright (C) 2012 - 2018 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>
+# Copyright (C) 2012 - 2018 by Iris Morelle <shadowm2006@gmail.com>
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
