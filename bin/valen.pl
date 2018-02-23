@@ -133,7 +133,7 @@ my @facilities = (
 		probe				=> PROBE_GZC_CAMPAIGND,
 		instances			=> [ @campaignd_standard_ports ],
 		links				=> [
-			{ title => 'Web Index', url => 'http://add-ons.wesnoth.org/' },
+			{ title => 'Web Index', url => 'https://addons.wesnoth.org/' },
 		],
 	},
 	'server.wesnoth.org', {
