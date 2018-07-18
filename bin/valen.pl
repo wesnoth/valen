@@ -144,7 +144,7 @@ my @facilities = (
 		probe				=> PROBE_GZC_WESNOTHD,
 		instances			=> [ @wesnothd_ports_all ],
 		links				=> [
-			{ title => 'Server Statistics', url => 'http://wesnothd.wesnoth.org/' },
+			#{ title => 'Server Statistics', url => 'http://wesnothd.wesnoth.org/' },
 			{ title => 'Replays Directory', url => 'https://replays.wesnoth.org/' },
 		],
 	},
