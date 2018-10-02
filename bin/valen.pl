@@ -717,7 +717,12 @@ for(my $k = 0; $k < @facilities; ++$k)
 					$instatus = check_url('http://' . $inhost . '/', $inhttphost);
 				}
 				elsif($def->{probe} == PROBE_HTTPS) {
-					$instatus = check_url('https://' . $inhost . '/', $inhttphost);
+					if($st->{dns} == STATUS_GOOD) {
+						$instatus = check_url('https://' . $inhost . '/', $inhttphost);
+					} else {
+						drep($host, 'PROBE', 'DNS is bad, attempting non-secure connection to ' . $inhttphost);
+						$instatus = check_url('http://' . $inhost . '/', $inhttphost);
+					}
 				}
 				elsif($def->{probe} == PROBE_GZC_WESNOTHD) {
 					$instatus = check_wesnothd($inhost, $inport);
