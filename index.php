@@ -172,12 +172,14 @@ function vweb_process_facility($fid, $fdata)
 	{
 		?><div class="dnsreport">
 			<span class="red bold">The following domain names are unavailable, compromised, or incorrectly configured:</span>
-			<ul><?php
-			foreach($broken_dns_hostnames as $hostname)
-			{
-				echo '<li>' . encode_html($hostname, false) . '</li>';
-			}
-			?></ul>
+			<div class="dnslist">
+				<ul><?php
+				foreach($broken_dns_hostnames as $hostname)
+				{
+					echo '<li>' . encode_html($hostname, false) . '</li>';
+				}
+				?></ul>
+			</div>
 		</div><?php
 	}
 

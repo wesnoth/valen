@@ -147,8 +147,10 @@ span.inname {
 .yellow { color: #d60;        }
 .gray   { color: #aaa;        }
 
-.dnsreport ul, .dnsreport li {
-	padding: 0;
+.dnslist {
+	-webkit-columns: 2;
+	-moz-columns:    2;
+	columns:         2;
 }
 
 .status-report-unavailable {
