@@ -126,6 +126,7 @@ my @facilities = (
 		probe				=> PROBE_HTTPS,
 		links				=> [
 			{ title => 'Board Index', url => 'https://forums.wesnoth.org/' },
+			{ title => 'Staff List',  url => 'https://forums.wesnoth.org/memberlist.php?mode=team' },
 		],
 	},
 	'wiki.wesnoth.org', {
@@ -136,6 +137,7 @@ my @facilities = (
 		links				=> [
 			{ title => 'Starting Points', url => 'https://wiki.wesnoth.org/' },
 			{ title => 'Statistics',      url => 'https://wiki.wesnoth.org/Special:Statistics' },
+			{ title => 'Staff List',      url => 'https://wiki.wesnoth.org/Special:ListUsers?group=sysop' },
 		],
 	},
 	'add-ons.wesnoth.org', {
