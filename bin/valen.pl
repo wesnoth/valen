@@ -91,6 +91,17 @@ my @wesnothd_basilic_ports = (
 
 my @wesnothd_ports_all = (@wesnothd_standard_ports);
 
+sub gen_baldras_redirector($)
+{
+	return {
+		ip					=> IP_BALDRAS,
+		name				=> "REDIR/" . $_[0] . ".wesnoth.org",
+		desc				=> "Generic redirector entry",
+		probe				=> PROBE_NONE,
+		hidden				=> 1,
+	}
+}
+
 my @facilities = (
 	'wesnoth.org', {
 		ip					=> IP_BALDRAS,
@@ -169,6 +180,14 @@ my @facilities = (
 		probe				=> PROBE_NONE,
 		hidden				=> 1,
 	},
+	#
+	# Key redirection vhosts that are expected to have working DNS entries
+	#
+	'coc.wesnoth.org',       gen_baldras_redirector('coc'),
+	'replays.wesnoth.org',   gen_baldras_redirector('replays'),
+	'irclogs.wesnoth.org',   gen_baldras_redirector('irclogs'),
+	'changelog.wesnoth.org', gen_baldras_redirector('changelog'),
+	'gettext.wesnoth.org',   gen_baldras_redirector('gettext'),
 );
 
 ################################################################################
