@@ -57,8 +57,8 @@ my %config = (
 
 use constant {
 	IP_BALDRAS				=> '144.76.5.6',		# baldras.wesnoth.org
-	IP_GONZO				=> '193.7.178.1',		# server2.wesnoth.org [gonzo.dicp.de]
-	IP_BASILIC				=> '212.85.158.134',	# server3.wesnoth.org [basilic.tuxfamily.org]
+	IP_BASILIC				=> '212.85.158.134',	# server2.wesnoth.org [basilic.tuxfamily.org]
+	IP_GONZO				=> '193.7.178.1',		# server3.wesnoth.org [gonzo.dicp.de]
 	IP_AI0867				=> '109.237.213.40',	# status.wesnoth.org [ai0867.net]
 };
 
@@ -86,10 +86,11 @@ my @wesnothd_standard_ports = (
 );
 
 my @wesnothd_basilic_ports = (
+	{ '1.14'				=> 14999 },
 	{ '1.12'				=> 15000 },
 );
 
-my @wesnothd_ports_all = (@wesnothd_standard_ports);
+my @wesnothd_ports_all = (@wesnothd_standard_ports, { '1.10' => 14996 });
 
 sub gen_baldras_redirector($)
 {
@@ -161,20 +162,20 @@ my @facilities = (
 			{ title => 'Replays Directory', url => 'https://replays.wesnoth.org/' },
 		],
 	},
-	#'server2.wesnoth.org', {
-	#	ip					=> IP_GONZO,
-	#	name				=> "Alternate MP Server 2",
-	#	desc				=> "Official alternate multiplayer games server #2 (wesnothd)",
-	#	probe				=> PROBE_GZC_WESNOTHD,
-	#	instances			=> [ @wesnothd_standard_ports ],
-	#},
-	'server3.wesnoth.org', {
+	'server2.wesnoth.org', {
 		ip					=> IP_BASILIC,
-		name				=> "Alternate MP Server 3",
-		desc				=> "Official alternate multiplayer games server #3 (wesnothd)",
+		name				=> "Alternate MP Server 2",
+		desc				=> "Official alternate multiplayer games server #2 (wesnothd)",
 		probe				=> PROBE_GZC_WESNOTHD,
 		instances			=> [ @wesnothd_basilic_ports ],
 	},
+	#'server3.wesnoth.org', {
+	#	ip					=> IP_GONZO,
+	#	name				=> "Alternate MP Server 3",
+	#	desc				=> "Official alternate multiplayer games server #3 (wesnothd)",
+	#	probe				=> PROBE_GZC_WESNOTHD,
+	#	instances			=> [ @wesnothd_standard_ports ],
+	#},
 	'status.wesnoth.org', {
 		ip					=> IP_AI0867,
 		name				=> "Status Service",
