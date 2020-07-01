@@ -75,7 +75,6 @@ my @campaignd_standard_ports = (
 	{ '1.14'				=> 15014 },
 	{ '1.15'				=> 15015 },
 	{ '1.12'				=> 15007 },
-	{ '1.10'				=> 15002 },
 );
 
 my @wesnothd_standard_ports = (
@@ -90,7 +89,7 @@ my @wesnothd_basilic_ports = (
 	{ '1.12'				=> 15000 },
 );
 
-my @wesnothd_ports_all = (@wesnothd_standard_ports, { '1.10' => 14996 });
+my @wesnothd_ports_all = (@wesnothd_standard_ports);
 
 sub gen_baldras_redirector($)
 {
