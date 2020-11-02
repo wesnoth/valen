@@ -186,6 +186,7 @@ my @facilities = (
 	#
 	# Key redirection vhosts that are expected to have working DNS entries
 	#
+	'r.wesnoth.org',         gen_baldras_redirector('r'),
 	'coc.wesnoth.org',       gen_baldras_redirector('coc'),
 	'replays.wesnoth.org',   gen_baldras_redirector('replays'),
 	'irclogs.wesnoth.org',   gen_baldras_redirector('irclogs'),
