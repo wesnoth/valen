@@ -57,6 +57,7 @@ my %config = (
 
 use constant {
 	IP_BALDRAS				=> '144.76.5.6',		# baldras.wesnoth.org
+	IP_CHANTAL				=> '95.217.86.148',		# chantal.wesnoth.org
 	IP_BASILIC				=> '212.85.158.134',	# server2.wesnoth.org [basilic.tuxfamily.org]
 	IP_GONZO				=> '193.7.178.1',		# server3.wesnoth.org [gonzo.dicp.de]
 	IP_AI0867				=> '109.237.213.40',	# status.wesnoth.org [ai0867.net]
@@ -141,7 +142,7 @@ my @facilities = (
 		],
 	},
 	'add-ons.wesnoth.org', {
-		ip					=> IP_BALDRAS,
+		ip					=> IP_CHANTAL,
 		name				=> "Add-ons Server",
 		desc				=> "Official add-ons server (campaignd)",
 		probe				=> PROBE_GZC_CAMPAIGND,
