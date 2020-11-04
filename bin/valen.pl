@@ -95,7 +95,7 @@ my @wesnothd_ports_all = (@wesnothd_standard_ports);
 sub gen_baldras_redirector($)
 {
 	return {
-		ip					=> IP_BALDRAS,
+		ip					=> IP_CHANTAL,
 		name				=> "REDIR/" . $_[0] . ".wesnoth.org",
 		desc				=> "Generic redirector entry",
 		probe				=> PROBE_NONE,
@@ -105,14 +105,14 @@ sub gen_baldras_redirector($)
 
 my @facilities = (
 	'wesnoth.org', {
-		ip					=> IP_BALDRAS,
+		ip					=> IP_CHANTAL,
 		name				=> "Main Server",
 		desc				=> "Placeholder entry used for DNS checks",
 		hidden				=> 1,
 		probe				=> PROBE_NONE,
 	},
 	'www.wesnoth.org', {
-		ip					=> IP_BALDRAS,
+		ip					=> IP_CHANTAL,
 		name				=> "Web Server",
 		desc				=> "HTTP server and front page",
 		probe				=> PROBE_HTTPS,
@@ -121,7 +121,7 @@ my @facilities = (
 		],
 	},
 	'forums.wesnoth.org', {
-		ip					=> IP_BALDRAS,
+		ip					=> IP_CHANTAL,
 		name				=> "Forums Board",
 		desc				=> "phpBB application",
 		probe				=> PROBE_HTTPS,
@@ -131,7 +131,7 @@ my @facilities = (
 		],
 	},
 	'wiki.wesnoth.org', {
-		ip					=> IP_BALDRAS,
+		ip					=> IP_CHANTAL,
 		name				=> "Wiki",
 		desc				=> "MediaWiki application",
 		probe				=> PROBE_HTTPS,
@@ -152,7 +152,7 @@ my @facilities = (
 		],
 	},
 	'server.wesnoth.org', {
-		ip					=> IP_BALDRAS,
+		ip					=> IP_CHANTAL,
 		name				=> "Primary MP Server",
 		desc				=> "Official main multiplayer games server (wesnothd)",
 		probe				=> PROBE_GZC_WESNOTHD,
