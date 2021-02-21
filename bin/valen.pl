@@ -115,7 +115,7 @@ my @facilities = (
 		ip					=> IP_CHANTAL,
 		name				=> "Web Server",
 		desc				=> "HTTP server and front page",
-		probe				=> PROBE_HTTPS,
+		probe				=> PROBE_HTTP,
 		links				=> [
 			{ title => 'Front Page', url => 'https://www.wesnoth.org/' },
 		],
@@ -124,7 +124,7 @@ my @facilities = (
 		ip					=> IP_CHANTAL,
 		name				=> "Forums Board",
 		desc				=> "phpBB application",
-		probe				=> PROBE_HTTPS,
+		probe				=> PROBE_HTTP,
 		links				=> [
 			{ title => 'Board Index', url => 'https://forums.wesnoth.org/' },
 			{ title => 'Staff List',  url => 'https://forums.wesnoth.org/memberlist.php?mode=team' },
@@ -134,7 +134,7 @@ my @facilities = (
 		ip					=> IP_CHANTAL,
 		name				=> "Wiki",
 		desc				=> "MediaWiki application",
-		probe				=> PROBE_HTTPS,
+		probe				=> PROBE_HTTP,
 		links				=> [
 			{ title => 'Starting Points', url => 'https://wiki.wesnoth.org/' },
 			{ title => 'Statistics',      url => 'https://wiki.wesnoth.org/Special:Statistics' },
