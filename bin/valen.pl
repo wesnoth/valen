@@ -728,7 +728,8 @@ for(my $k = 0; $k < @facilities; ++$k)
 		foreach my $inentry (@$instances)
 		{
 			my $iname = (keys %$inentry)[0];
-			my $inport = $inentry->{$iname}; # Ignored for non GZC probes.
+			my $inport = $inentry->{$iname};
+			$inport = 0 if $inport eq '*';
 
 			my $instatus = STATUS_UNKNOWN;
 			my $inresponse_time = undef;
@@ -736,15 +737,17 @@ for(my $k = 0; $k < @facilities; ++$k)
 			{
 				my $otimer = otimer->new();
 
+				my $webpath = $inhost . ($inport ? ':' . $inport : ''); # http or https only
+
 				if($def->{probe} == PROBE_HTTP) {
-					$instatus = check_url('http://' . $inhost . '/', $inhttphost);
+					$instatus = check_url('http://' . $webpath . '/', $inhttphost);
 				}
 				elsif($def->{probe} == PROBE_HTTPS) {
 					if($st->{dns} == STATUS_GOOD) {
-						$instatus = check_url('https://' . $inhost . '/', $inhttphost);
+						$instatus = check_url('https://' . $webpath . '/', $inhttphost);
 					} else {
 						drep($host, 'PROBE', 'DNS is bad, attempting non-secure connection to ' . $inhttphost);
-						$instatus = check_url('http://' . $inhost . '/', $inhttphost);
+						$instatus = check_url('http://' . $webpath . '/', $inhttphost);
 					}
 				}
 				elsif($def->{probe} == PROBE_GZC_WESNOTHD) {
