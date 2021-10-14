@@ -141,6 +141,13 @@ my @facilities = (
 			{ title => 'Staff List',      url => 'https://wiki.wesnoth.org/Special:ListUsers?group=sysop' },
 		],
 	},
+	'jenkins.wesnoth.org', {
+		ip					=> IP_CHANTAL,
+		name				=> "Jenkins",
+		desc				=> "Continuous integration and delivery (CI/CD) services",
+		probe				=> PROBE_HTTP,
+		instances			=> [{ '*' => 8080 }], # HACK to set the unique port number
+	},
 	'add-ons.wesnoth.org', {
 		ip					=> IP_CHANTAL,
 		name				=> "Add-ons Server",
