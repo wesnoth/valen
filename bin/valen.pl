@@ -194,6 +194,15 @@ my @facilities = (
 			{ title => 'Dashboard', url => 'http://jenkins.wesnoth.org:8080/' },
 		],
 	},
+	'mailman.wesnoth.org', {
+		ip					=> IP_CHANTAL,
+		name				=> "Mailman",
+		desc				=> "Mailing list services",
+		probe				=> PROBE_HTTPS,
+		links				=> [
+			{ title => 'Lists Index', url => 'https://mailman.wesnoth.org/' },
+		],
+	},
 	#
 	# Key redirection vhosts that are expected to have working DNS entries
 	#
