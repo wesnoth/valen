@@ -60,6 +60,7 @@ use constant {
 	IP_BASILIC				=> '212.85.158.134',	# server2.wesnoth.org [basilic.tuxfamily.org]
 	IP_GONZO				=> '193.7.178.1',		# server3.wesnoth.org [gonzo.dicp.de]
 	IP_AI0867				=> '109.237.213.40',	# status.wesnoth.org [ai0867.net]
+	IP_NORSULA				=> '167.172.149.198',	# status.wesnoth.org [norsula.irydacea.me]
 };
 
 use constant {
@@ -184,7 +185,7 @@ my @facilities = (
 	#	instances			=> [ @wesnothd_standard_ports ],
 	#},
 	'status.wesnoth.org', {
-		ip					=> IP_AI0867,
+		ip					=> IP_NORSULA,
 		name				=> "Status Service",
 		desc				=> "External status monitoring facility",
 		probe				=> PROBE_NONE,
