@@ -142,13 +142,6 @@ my @facilities = (
 			{ title => 'Staff List',      url => 'https://wiki.wesnoth.org/Special:ListUsers?group=sysop' },
 		],
 	},
-	'jenkins.wesnoth.org', {
-		ip					=> IP_CHANTAL,
-		name				=> "Jenkins",
-		desc				=> "Continuous integration and delivery (CI/CD) services",
-		probe				=> PROBE_HTTP,
-		instances			=> [{ '*' => 8080 }], # HACK to set the unique port number
-	},
 	'add-ons.wesnoth.org', {
 		ip					=> IP_CHANTAL,
 		name				=> "Add-ons Server",
@@ -190,6 +183,16 @@ my @facilities = (
 		desc				=> "External status monitoring facility",
 		probe				=> PROBE_NONE,
 		hidden				=> 1,
+	},
+	'jenkins.wesnoth.org', {
+		ip					=> IP_CHANTAL,
+		name				=> "Jenkins",
+		desc				=> "Continuous integration and delivery (CI/CD) services",
+		probe				=> PROBE_HTTP,
+		instances			=> [{ '*' => 8080 }], # HACK to set the unique port number
+		links				=> [
+			{ title => 'Dashboard', url => 'http://jenkins.wesnoth.org:8080/' },
+		],
 	},
 	#
 	# Key redirection vhosts that are expected to have working DNS entries
