@@ -87,8 +87,8 @@ my @wesnothd_standard_ports = (
 );
 
 my @wesnothd_basilic_ports = (
+	{ '1.16'				=> 15000 },
 	{ '1.14'				=> 14999 },
-	{ '1.12'				=> 15000 },
 );
 
 my @wesnothd_ports_all = (@wesnothd_standard_ports);
