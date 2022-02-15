@@ -75,6 +75,7 @@ my @campaignd_standard_ports = (
 	{ 'Testing'				=> 15004 },
 	{ '1.16'				=> 15016 },
 	{ '1.14'				=> 15014 },
+	{ '1.17'				=> 15017 },
 );
 
 my @wesnothd_standard_ports = (
