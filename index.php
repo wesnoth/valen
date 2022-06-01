@@ -414,7 +414,7 @@ if ($report_available)
 		site or servers, you can come here to check whether the problem is only
 		at your end or affects everyone.</p>
 
-		<p>For reporting issues or requesting help, you can use our <a href="https://discord.gg/battleforwesnoth"><b>official Discord server</b></a>, or our official <abbr title="Internet Relay Chat">IRC</abbr> channel <a href="https://webchat.freenode.net/?channels=wesnoth"><b>#wesnoth</b></a> on <code class="noframe">irc.freenode.net</code>.</p>
+		<p>For reporting issues or requesting help, you can use our <a href="https://discord.gg/battleforwesnoth"><b>official Discord server</b></a>, or our official <abbr title="Internet Relay Chat">IRC</abbr> channel <a href="https://web.libera.chat/#wesnoth"><b>#wesnoth</b></a> on <code class="noframe">irc.libera.chat</code>.</p>
 
 		<p>Alternatively, you may use our forums:</p>
 
