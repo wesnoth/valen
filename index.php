@@ -3,7 +3,7 @@
  * codename "Valen": a Wesnoth facilities status page
  * index.php: Web front-end
  *
- * Copyright (C) 2012 - 2020 by Iris Morelle <shadowm2006@gmail.com>
+ * Copyright (C) 2012 - 2023 by Iris Morelle <shadowm@wesnoth.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -475,8 +475,8 @@ else
 
 <div id="footer"><div id="footer-content"><div>
 	<a href="https://wiki.wesnoth.org/StartingPoints">Site Map</a> &#8226; <a href="https://status.wesnoth.org/">Site Status</a><br />
-	Copyright &copy; 2003&ndash;2021 by <a rel="author" href="https://wiki.wesnoth.org/Project">The Battle for Wesnoth Project</a>.<br />
-	Site design Copyright &copy; 2017&ndash;2021 by Iris Morelle.
+	Copyright &copy; 2003&ndash;2023 by <a rel="author" href="https://wiki.wesnoth.org/Project">The Battle for Wesnoth Project</a>.<br />
+	Site design Copyright &copy; 2017&ndash;2023 by Iris Morelle.
 </div></div></div>
 
 <script type="text/javascript">
