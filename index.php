@@ -422,8 +422,6 @@ if ($report_available)
 			<li><a href="https://forums.wesnoth.org/viewforum.php?f=4">Technical Support</a> — For assistance with the add-ons and multiplayer client functionality of the game</li>
 			<li><a href="https://forums.wesnoth.org/viewforum.php?f=17">Website</a> — For reporting problems or suggesting ideas for the Wesnoth.org website in general</li>
 		</ul>
-
-		<p>You may also follow <a href="https://twitter.com/Wesnoth"><b>@Wesnoth</b></a> on Twitter for status updates!</p>
 	</div>
 
 	<div class="chronology">
