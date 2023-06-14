@@ -796,6 +796,8 @@ for(my $k = 0; $k < @facilities; ++$k)
 				};
 			}
 		}
+	} else {
+		$st->{status} = $st->{dns};
 	}
 
 	$st->{hostname} = $host;
