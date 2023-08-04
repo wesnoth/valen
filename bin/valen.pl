@@ -164,8 +164,8 @@ my @facilities = (
 	},
 	'server2.wesnoth.org', {
 		ip					=> IP_BASILIC,
-		name				=> "Alternate MP Server 2",
-		desc				=> "Official alternate multiplayer games server #2 (wesnothd)",
+		name				=> "Alternate MP Server",
+		desc				=> "Alternate multiplayer games server (wesnothd)",
 		probe				=> PROBE_GZC_WESNOTHD,
 		instances			=> [ @wesnothd_basilic_ports ],
 	},
