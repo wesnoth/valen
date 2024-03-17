@@ -3,7 +3,7 @@
  * codename "Valen": a Wesnoth facilities status page
  * index.php: Web front-end
  *
- * Copyright (C) 2012 - 2023 by Iris Morelle <shadowm@wesnoth.org>
+ * Copyright (C) 2012 - 2024 by Iris Morelle <shadowm@wesnoth.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
