@@ -163,13 +163,13 @@ my @facilities = (
 			{ title => 'Replays Directory', url => 'https://replays.wesnoth.org/' },
 		],
 	},
-	'server2.wesnoth.org', {
-		ip					=> IP_BASILIC,
-		name				=> "Alternate MP Server",
-		desc				=> "Alternate multiplayer games server (wesnothd)",
-		probe				=> PROBE_GZC_WESNOTHD,
-		instances			=> [ @wesnothd_basilic_ports ],
-	},
+	#'server2.wesnoth.org', {
+	#	ip					=> IP_BASILIC,
+	#	name				=> "Alternate MP Server",
+	#	desc				=> "Alternate multiplayer games server (wesnothd)",
+	#	probe				=> PROBE_GZC_WESNOTHD,
+	#	instances			=> [ @wesnothd_basilic_ports ],
+	#},
 	#'server3.wesnoth.org', {
 	#	ip					=> IP_GONZO,
 	#	name				=> "Alternate MP Server 3",
