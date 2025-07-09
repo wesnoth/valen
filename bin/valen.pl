@@ -57,10 +57,6 @@ my %config = (
 
 use constant {
 	IP_CHANTAL				=> '95.217.86.148',		# chantal.wesnoth.org
-	IP_BASILIC				=> '212.85.158.134',	# server2.wesnoth.org [basilic.tuxfamily.org]
-	IP_GONZO				=> '193.7.178.1',		# server3.wesnoth.org [gonzo.dicp.de]
-	IP_AI0867				=> '109.237.213.40',	# status.wesnoth.org [ai0867.net]
-	IP_NORSULA				=> '167.172.149.198',	# status.wesnoth.org [norsula.irydacea.me]
 	IP_IRDYA				=> '152.53.167.163',	# status.wesnoth.org [irdya.irydacea.me]
 };
 
