@@ -61,6 +61,7 @@ use constant {
 	IP_GONZO				=> '193.7.178.1',		# server3.wesnoth.org [gonzo.dicp.de]
 	IP_AI0867				=> '109.237.213.40',	# status.wesnoth.org [ai0867.net]
 	IP_NORSULA				=> '167.172.149.198',	# status.wesnoth.org [norsula.irydacea.me]
+	IP_IRDYA				=> '152.53.167.163',	# status.wesnoth.org [irdya.irydacea.me]
 };
 
 use constant {
@@ -178,7 +179,7 @@ my @facilities = (
 	#	instances			=> [ @wesnothd_standard_ports ],
 	#},
 	'status.wesnoth.org', {
-		ip					=> IP_NORSULA,
+		ip					=> IP_IRDYA,
 		name				=> "Status Service",
 		desc				=> "External status monitoring facility",
 		probe				=> PROBE_NONE,
