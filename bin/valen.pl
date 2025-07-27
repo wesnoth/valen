@@ -208,8 +208,8 @@ my @facilities = (
 
 # Various timeouts (in seconds).
 use constant {
-	HTTP_TIMEOUT			=> 10,
-	GZCLIENT_TIMEOUT		=> 10,
+	HTTP_TIMEOUT			=> 25,
+	GZCLIENT_TIMEOUT		=> 25,
 };
 
 # A status of 0 indicates that the facility isn't working properly;
