@@ -233,8 +233,8 @@ if (function_exists('ob_gzhandler') && extension_loaded('zlib'))
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width,initial-scale=1" />
 
-	<link rel="icon" type="image/png" href="wesmere/favicon-32.png" sizes="32x32" />
-	<link rel="icon" type="image/png" href="wesmere/favicon-16.png" sizes="16x16" />
+	<link rel="icon" type="image/png" href="img/favicon-32.png" sizes="32x32" />
+	<link rel="icon" type="image/png" href="img/favicon-16.png" sizes="16x16" />
 	<link rel="stylesheet" type="text/css" href="wesmere/mini.css" />
 	<link rel="stylesheet" type="text/css" href="valen/valen2.css" />
 
