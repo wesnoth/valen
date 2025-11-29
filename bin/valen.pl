@@ -57,7 +57,7 @@ my %config = (
 
 use constant {
 	IP_CHANTAL				=> '95.217.86.148',		# chantal.wesnoth.org
-	IP_IRDYA				=> '152.53.167.163',	# status.wesnoth.org [irdya.irydacea.me]
+	IP_IRDYA				=> '152.53.168.108',	# status.wesnoth.org [irdya.irydacea.me]
 };
 
 use constant {
