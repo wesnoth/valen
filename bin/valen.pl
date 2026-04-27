@@ -149,6 +149,15 @@ my @facilities = (
 			{ title => 'Web Index', url => 'https://addons.wesnoth.org/' },
 		],
 	},
+	'tournament.wesnoth.org', {
+		ip					=> IP_CHANTAL,
+		name				=> "Tournament Manager",
+		desc				=> "Ranked games and player tournaments",
+		probe				=> PROBE_HTTPS,
+		links				=> [
+			{ title => 'Front Page', url => 'https://tournament.wesnoth.org/' },
+		],
+	},
 	'server.wesnoth.org', {
 		ip					=> IP_CHANTAL,
 		name				=> "Primary MP Server",
