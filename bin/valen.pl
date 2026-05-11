@@ -194,8 +194,8 @@ my @facilities = (
 		ip					=> IP_CHANTAL,
 		name				=> "Jenkins",
 		desc				=> "Continuous integration and delivery (CI/CD) services",
-		probe				=> PROBE_HTTP,
-		instances			=> [{ '*' => 8080 }], # HACK to set the unique port number
+		probe				=> PROBE_HTTPS,
+		instances			=> [{ '*' => 8443 }], # HACK to set the unique port number
 		links				=> [
 			{ title => 'Dashboard', url => 'http://jenkins.wesnoth.org:8080/' },
 		],
