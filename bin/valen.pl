@@ -71,15 +71,11 @@ use constant {
 my @campaignd_standard_ports = (
 	{ 'Testing'				=> 15004 },
 	{ '1.18'				=> 15018 },
-	{ '1.16'				=> 15016 },
-	{ '1.14'				=> 15014 },
 );
 
 my @wesnothd_standard_ports = (
 	{ 'Master'				=> 15000 },
 	{ '1.18'				=> 14998 },
-	{ '1.16'				=> 14996 },
-	{ '1.14'				=> 14999 },
 );
 
 my @wesnothd_basilic_ports = (
